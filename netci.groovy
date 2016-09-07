@@ -59,7 +59,7 @@ def osShortName = ['Windows 10': 'win10',
         def batchCommand = 'call build.cmd -coverage -outerloop -- /p:WithoutCategories=IgnoreForCI'
         if (isLocal) {
             newJobName = "${newJobName}_local"
-            batchCommand = "${batchCommand} /p:TestWithLocalLibraries=true"
+            batchCommand = "${batchCommand} /p:TestWithLocalNativeLibraries=true"
         }
         def newJob = job(Utilities.getFullJobName(project, newJobName, isPR)) {
             steps {
@@ -218,10 +218,10 @@ def osShortName = ['Windows 10': 'win10',
                         batchFile("call \"C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\vcvarsall.bat\" x86 && build.cmd -${configurationGroup} -outerloop -- /p:WithoutCategories=IgnoreForCI")
                     }
                     else if (osName == 'OSX') {
-                        shell("HOME=\$WORKSPACE/tempHome ./build.sh -${configurationGroup.toLowerCase()} -outerloop -testWithLocalLibraries -- /p:WithoutCategories=IgnoreForCI")
+                        shell("HOME=\$WORKSPACE/tempHome ./build.sh -${configurationGroup.toLowerCase()} -outerloop -- /p:TestWithLocalNativeLibraries=true /p:WithoutCategories=IgnoreForCI")
                     }
                     else {
-                        shell("sudo HOME=\$WORKSPACE/tempHome ./build.sh -${configurationGroup.toLowerCase()} -outerloop -testWithLocalLibraries -- /p:TestNugetRuntimeId=${targetNugetRuntimeMap[osName]} /p:WithoutCategories=IgnoreForCI")
+                        shell("sudo HOME=\$WORKSPACE/tempHome ./build.sh -${configurationGroup.toLowerCase()} -outerloop -- /p:TestWithLocalNativeLibraries=true /p:TestNugetRuntimeId=${targetNugetRuntimeMap[osName]} /p:WithoutCategories=IgnoreForCI")
                     }
                 }
             }
@@ -285,6 +285,58 @@ def osShortName = ['Windows 10': 'win10',
 }
 
 // **************************
+// Define ARM64 testing.  Built locally and submitted to lab machines
+// **************************
+['Windows_NT'].each { os ->
+    ['Debug', 'Release'].each { configurationGroup ->
+        def newJobName = "arm64_${os.toLowerCase()}_${configurationGroup.toLowerCase()}"
+        def arm64Users = ['ianhays', 'kyulee1', 'gkhanna79', 'weshaggard', 'stephentoub', 'rahku', 'ramarag']
+        def newJob = job(Utilities.getFullJobName(project, newJobName, /* isPR */ false)) {
+            steps {
+                // build the world, but don't run the tests
+                batchFile("build-native.cmd -buildArch=arm64 -${configurationGroup} -- toolsetDir=C:\\ats2")
+                batchFile("build-managed.cmd -- /p:Creator=dotnet-bot /p:ArchiveTests=true /p:ConfigurationGroup=${configurationGroup} /p:TestDisabled=true /p:TestProduct=CoreFx /p:Branch=${branch} /p:FilterToOSGroup=${os} /p:TargetOS=${os} /p:OSGroup=${os} /p:Platform=ARM64 /p:TestArchitecture=arm64 /p:DefaultTestTFM=netcoreapp1.1 /p:TestNugetRuntimeId=win10-arm64")
+            }
+            label("arm64_corefx")
+            
+            // Kick off the test run
+            publishers {
+                archiveArtifacts {
+                    pattern("bin/tests/${os}.ARM64.${configurationGroup}/archive/tests/netcoreapp1.1/**")
+                    onlyIfSuccessful(true)
+                    allowEmpty(false)
+                }
+                postBuildScripts {
+                    steps {
+                        // Transfer the tests to the ARM64 machine and signal it to begin
+                        batchFile("Z:\\arm64\\common\\scripts_corefx\\JenkinsPostBuild.cmd %WORKSPACE% ${configurationGroup} %BUILD_NUMBER%")
+                    }
+                    onlyIfBuildSucceeds(true)
+                    onlyIfBuildFails(false)
+                }
+            }
+        }
+
+        // Set up standard options.
+        Utilities.standardJobSetup(newJob, project, /* isPR */ false, "*/${branch}")
+        
+        // Set a daily trigger
+        Utilities.addPeriodicTrigger(newJob, '@daily')
+        
+        // Set up a PR trigger that is only triggerable by certain members
+        Utilities.addPrivateGithubPRTriggerForBranch(newJob, branch, "Windows_NT ARM64 ${configurationGroup} Build and Test", "(?i).*test\\W+ARM64\\W+${os}\\W+${configurationGroup}", null, arm64Users)
+
+        // Set up a per-push trigger
+        // Temporarily disabled until private triggers are stable
+        // Utilities.addGithubPushTrigger(newJob)
+
+        // Get results
+        Utilities.addXUnitDotNETResults(newJob, 'bin/tests/testresults/**/testResults.xml')
+    }
+}
+
+
+// **************************
 // Define innerloop testing.  These jobs run on every merge and a subset of them run on every PR, the ones
 // that don't run per PR can be requested via a magic phrase.
 // **************************
@@ -304,7 +356,7 @@ def osShortName = ['Windows 10': 'win10',
                     else {
                         // Use Server GC for Ubuntu/OSX Debug PR build & test
                         def useServerGC = (configurationGroup == 'Release' && isPR) ? 'useServerGC' : ''
-                        shell("HOME=\$WORKSPACE/tempHome ./build.sh -${configurationGroup.toLowerCase()} -testWithLocalLibraries -- ${useServerGC} /p:TestNugetRuntimeId=${targetNugetRuntimeMap[osName]} /p:WithoutCategories=IgnoreForCI")
+                        shell("HOME=\$WORKSPACE/tempHome ./build.sh -${configurationGroup.toLowerCase()} -- ${useServerGC} /p:TestWithLocalNativeLibraries=true /p:TestNugetRuntimeId=${targetNugetRuntimeMap[osName]} /p:WithoutCategories=IgnoreForCI")
                         // Tar up the appropriate bits.  On OSX the tarring is a different syntax for exclusion.
                         if (osName == 'OSX') {
                             shell("tar -czf bin/build.tar.gz --exclude *.Tests bin/*.${configurationGroup} bin/ref bin/packages")

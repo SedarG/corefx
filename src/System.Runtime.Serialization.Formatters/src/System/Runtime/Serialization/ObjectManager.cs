@@ -778,12 +778,19 @@ namespace System.Runtime.Serialization
 
         internal static ConstructorInfo GetDeserializationConstructor(Type t)
         {
-            ConstructorInfo ci = t.GetConstructor(new[] { typeof(SerializationInfo), typeof(StreamingContext) });
-            if (ci == null)
+            // TODO #10530: Use Type.GetConstructor that takes BindingFlags when it's available
+            foreach (ConstructorInfo ci in t.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly))
             {
-                throw new SerializationException(SR.Format(SR.Serialization_ConstructorNotFound, t.FullName));
+                ParameterInfo[] parameters = ci.GetParameters();
+                if (parameters.Length == 2 &&
+                    parameters[0].ParameterType == typeof(SerializationInfo) &&
+                    parameters[1].ParameterType == typeof(StreamingContext))
+                {
+                    return ci;
+                }
             }
-            return ci;
+
+            throw new SerializationException(SR.Format(SR.Serialization_ConstructorNotFound, t.FullName));
         }
 
         public virtual void DoFixups()
@@ -1623,5 +1630,18 @@ namespace System.Runtime.Serialization
         }
 
         internal string TypeName { get; }
+    }
+
+    // TODO: Temporary workaround.  Remove this once SerializationInfo.UpdateValue is exposed
+    // from coreclr for use by ObjectManager.
+    internal static class SerializationInfoExtensions
+    {
+        private static readonly Action<SerializationInfo, string, object, Type> s_updateValue =
+            (Action<SerializationInfo, string, object, Type>)typeof(SerializationInfo)
+            .GetMethod("UpdateValue", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+            .CreateDelegate(typeof(Action<SerializationInfo, string, object, Type>));
+
+        public static void UpdateValue(this SerializationInfo si, string name, object value, Type type) =>
+            s_updateValue(si, name, value, type);
     }
 }

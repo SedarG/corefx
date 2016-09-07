@@ -32,15 +32,77 @@ namespace System
         public static object CreateInstance(System.Type type, params object[] args) { return default(object); }
         public static T CreateInstance<T>() { return default(T); }
     }
-    public partial class ArgumentException : System.Exception
+
+    public partial class EntryPointNotFoundException : System.TypeLoadException
+    {
+        public EntryPointNotFoundException() { }
+        public EntryPointNotFoundException(string message) { }
+        public EntryPointNotFoundException(string message, Exception innerException) { }
+        protected EntryPointNotFoundException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+    }
+
+    public sealed partial class StackOverflowException : System.SystemException
+    {
+        public StackOverflowException() { }
+        public StackOverflowException(string message) { }
+        public StackOverflowException(string message, Exception innerException) { }
+    }
+
+    public partial class NotFiniteNumberException : System.ArithmeticException
+    {
+        public NotFiniteNumberException() { }
+        public NotFiniteNumberException(double offendingNumber) { }
+        public NotFiniteNumberException(string message) { }
+        public NotFiniteNumberException(string message, double offendingNumber) { }
+        public NotFiniteNumberException(string message, Exception innerException) { }
+        public NotFiniteNumberException(string message, double offendingNumber, Exception innerException) { }
+        protected NotFiniteNumberException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+        public double OffendingNumber { get; }
+        public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
+    }
+
+    public partial class AccessViolationException : System.SystemException
+    {
+        public AccessViolationException() { }
+        public AccessViolationException(string message) { }
+        public AccessViolationException(string message, Exception innerException) { }
+        protected AccessViolationException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+    }
+
+    public partial class ApplicationException : System.Exception
+    {
+        public ApplicationException() { }
+        public ApplicationException(string message) { }
+        public ApplicationException(string message, Exception innerException) { }
+        protected ApplicationException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+    }
+
+    public partial class SystemException : System.Exception
+    {
+        public SystemException() { }
+        public SystemException(string message) { }
+        public SystemException(string message, Exception innerException) { }
+        protected SystemException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+    }
+
+    public sealed partial class ExecutionEngineException : System.SystemException
+    {
+        public ExecutionEngineException() { }
+        public ExecutionEngineException(string message) { }
+        public ExecutionEngineException(string message, Exception innerException) { }
+    }
+
+    public partial class ArgumentException : System.Exception, System.Runtime.Serialization.ISerializable
     {
         public ArgumentException() { }
         public ArgumentException(string message) { }
         public ArgumentException(string message, System.Exception innerException) { }
         public ArgumentException(string message, string paramName) { }
         public ArgumentException(string message, string paramName, System.Exception innerException) { }
+        protected ArgumentException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
         public override string Message { get { return default(string); } }
         public virtual string ParamName { get { return default(string); } }
+        public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
     public partial class ArgumentNullException : System.ArgumentException
     {
@@ -48,22 +110,26 @@ namespace System
         public ArgumentNullException(string paramName) { }
         public ArgumentNullException(string message, System.Exception innerException) { }
         public ArgumentNullException(string paramName, string message) { }
+        protected ArgumentNullException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
-    public partial class ArgumentOutOfRangeException : System.ArgumentException
+    public partial class ArgumentOutOfRangeException : System.ArgumentException, System.Runtime.Serialization.ISerializable
     {
         public ArgumentOutOfRangeException() { }
         public ArgumentOutOfRangeException(string paramName) { }
         public ArgumentOutOfRangeException(string message, System.Exception innerException) { }
         public ArgumentOutOfRangeException(string paramName, object actualValue, string message) { }
         public ArgumentOutOfRangeException(string paramName, string message) { }
+        protected ArgumentOutOfRangeException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
         public virtual object ActualValue { get { return default(object); } }
         public override string Message { get { return default(string); } }
+        public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
     public partial class ArithmeticException : System.Exception
     {
         public ArithmeticException() { }
         public ArithmeticException(string message) { }
         public ArithmeticException(string message, System.Exception innerException) { }
+        protected ArithmeticException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
     public abstract partial class Array : System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList, System.Collections.IStructuralComparable, System.Collections.IStructuralEquatable, System.ICloneable
     {
@@ -212,6 +278,7 @@ namespace System
         public ArrayTypeMismatchException() { }
         public ArrayTypeMismatchException(string message) { }
         public ArrayTypeMismatchException(string message, System.Exception innerException) { }
+        protected ArrayTypeMismatchException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
     public delegate void AsyncCallback(System.IAsyncResult ar);
     [System.AttributeUsageAttribute((System.AttributeTargets)(32767), Inherited = true, AllowMultiple = false)]
@@ -256,6 +323,7 @@ namespace System
         public BadImageFormatException(string message, System.Exception inner) { }
         public BadImageFormatException(string message, string fileName) { }
         public BadImageFormatException(string message, string fileName, System.Exception inner) { }
+        protected BadImageFormatException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
         public string FileName { get { return default(string); } }
         public override string Message { get { return default(string); } }
         public override string ToString() { return default(string); }
@@ -270,8 +338,8 @@ namespace System
         public override bool Equals(object obj) { return default(bool); }
         public override int GetHashCode() { return default(int); }
         public static bool Parse(string value) { return default(bool); }
-        int System.IComparable.CompareTo(object obj) { return default(int); }
-        System.TypeCode System.IConvertible.GetTypeCode() { return default(System.TypeCode); }
+        public int CompareTo(object obj) { return default(int); }
+        public System.TypeCode GetTypeCode() { return default(System.TypeCode); }
         bool System.IConvertible.ToBoolean(System.IFormatProvider provider) { return default(bool); }
         byte System.IConvertible.ToByte(System.IFormatProvider provider) { return default(byte); }
         char System.IConvertible.ToChar(System.IFormatProvider provider) { return default(char); }
@@ -317,8 +385,8 @@ namespace System
         public static byte Parse(string s, System.Globalization.NumberStyles style) { return default(byte); }
         public static byte Parse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider) { return default(byte); }
         public static byte Parse(string s, System.IFormatProvider provider) { return default(byte); }
-        int System.IComparable.CompareTo(object value) { return default(int); }
-        System.TypeCode System.IConvertible.GetTypeCode() { return default(System.TypeCode); }
+        public int CompareTo(object value) { return default(int); }
+        public System.TypeCode GetTypeCode() { return default(System.TypeCode); }
         bool System.IConvertible.ToBoolean(System.IFormatProvider provider) { return default(bool); }
         byte System.IConvertible.ToByte(System.IFormatProvider provider) { return default(byte); }
         char System.IConvertible.ToChar(System.IFormatProvider provider) { return default(char); }
@@ -386,8 +454,8 @@ namespace System
         public static bool IsWhiteSpace(char c) { return default(bool); }
         public static bool IsWhiteSpace(string s, int index) { return default(bool); }
         public static char Parse(string s) { return default(char); }
-        int System.IComparable.CompareTo(object value) { return default(int); }
-        System.TypeCode System.IConvertible.GetTypeCode() { return default(System.TypeCode); }
+        public int CompareTo(object value) { return default(int); }
+        public System.TypeCode GetTypeCode() { return default(System.TypeCode); }
         bool System.IConvertible.ToBoolean(System.IFormatProvider provider) { return default(bool); }
         byte System.IConvertible.ToByte(System.IFormatProvider provider) { return default(byte); }
         char System.IConvertible.ToChar(System.IFormatProvider provider) { return default(char); }
@@ -420,7 +488,7 @@ namespace System
     }
     public delegate int Comparison<in T>(T x, T y);
     public delegate TOutput Converter<in TInput, out TOutput>(TInput input);
-    public partial struct DateTime : System.IComparable, System.IComparable<System.DateTime>, System.IConvertible, System.IEquatable<System.DateTime>, System.IFormattable
+    public partial struct DateTime : System.IComparable, System.IComparable<System.DateTime>, System.IConvertible, System.IEquatable<System.DateTime>, System.IFormattable, System.Runtime.Serialization.ISerializable
     {
         public static readonly System.DateTime MaxValue;
         public static readonly System.DateTime MinValue;
@@ -514,8 +582,7 @@ namespace System
         ushort System.IConvertible.ToUInt16(System.IFormatProvider provider) { return default(ushort); }
         uint System.IConvertible.ToUInt32(System.IFormatProvider provider) { return default(uint); }
         ulong System.IConvertible.ToUInt64(System.IFormatProvider provider) { return default(ulong); }
-        // Uncomment when this method is available in System.Private.CoreLib.dll
-        //void System.Runtime.Serialization.ISerializable.GetObjectData(SerializationInfo info, StreamingContext context) { }
+        void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public long ToBinary() { return default(long); }
         public long ToFileTime() { return default(long); }
         public long ToFileTimeUtc() { return default(long); }
@@ -664,6 +731,7 @@ namespace System
         public static bool Equals(decimal d1, decimal d2) { return default(bool); }
         public override bool Equals(object value) { return default(bool); }
         public static decimal Floor(decimal d) { return default(decimal); }
+        public static decimal FromOACurrency(long cy) { return default(decimal); }
         public static int[] GetBits(decimal d) { return default(int[]); }
         public override int GetHashCode() { return default(int); }
         public static decimal Multiply(decimal d1, decimal d2) { return default(decimal); }
@@ -718,9 +786,13 @@ namespace System
         public static decimal Parse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider) { return default(decimal); }
         public static decimal Parse(string s, System.IFormatProvider provider) { return default(decimal); }
         public static decimal Remainder(decimal d1, decimal d2) { return default(decimal); }
+        public static decimal Round(decimal d) { return default(decimal); }
+        public static decimal Round(decimal d, int decimals) { return default(decimal); }
+        public static decimal Round(decimal d, int decimals, MidpointRounding mode) { return default(decimal); }
+        public static decimal Round(decimal d, MidpointRounding mode) { return default(decimal); }
         public static decimal Subtract(decimal d1, decimal d2) { return default(decimal); }
-        int System.IComparable.CompareTo(object value) { return default(int); }
-        System.TypeCode System.IConvertible.GetTypeCode() { return default(System.TypeCode); }
+        public int CompareTo(object value) { return default(int); }
+        public System.TypeCode GetTypeCode() { return default(System.TypeCode); }
         bool System.IConvertible.ToBoolean(System.IFormatProvider provider) { return default(bool); }
         byte System.IConvertible.ToByte(System.IFormatProvider provider) { return default(byte); }
         char System.IConvertible.ToChar(System.IFormatProvider provider) { return default(char); }
@@ -741,6 +813,7 @@ namespace System
         public static short ToInt16(decimal value) { return default(short); }
         public static int ToInt32(decimal d) { return default(int); }
         public static long ToInt64(decimal d) { return default(long); }
+        public static long ToOACurrency(decimal value) { return default(long); }
         [System.CLSCompliantAttribute(false)]
         public static sbyte ToSByte(decimal value) { return default(sbyte); }
         public static float ToSingle(decimal d) { return default(float); }
@@ -758,7 +831,7 @@ namespace System
         public static bool TryParse(string s, out decimal result) { result = default(decimal); return default(bool); }
         public static bool TryParse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out decimal result) { result = default(decimal); return default(bool); }
     }
-    public abstract partial class Delegate
+    public abstract partial class Delegate: System.Runtime.Serialization.ISerializable
     {
         internal Delegate() { }
         public object Target { get { return default(object); } }
@@ -768,6 +841,7 @@ namespace System
         public override bool Equals(object obj) { return default(bool); }
         public override int GetHashCode() { return default(int); }
         public virtual System.Delegate[] GetInvocationList() { return default(System.Delegate[]); }
+        public virtual void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public static bool operator ==(System.Delegate d1, System.Delegate d2) { return default(bool); }
         public static bool operator !=(System.Delegate d1, System.Delegate d2) { return default(bool); }
         public static System.Delegate Remove(System.Delegate source, System.Delegate value) { return default(System.Delegate); }
@@ -778,6 +852,7 @@ namespace System
         public DivideByZeroException() { }
         public DivideByZeroException(string message) { }
         public DivideByZeroException(string message, System.Exception innerException) { }
+        protected DivideByZeroException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
     [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential)]
     public partial struct Double : System.IComparable, System.IComparable<double>, System.IConvertible, System.IEquatable<double>, System.IFormattable
@@ -800,8 +875,8 @@ namespace System
         public static double Parse(string s, System.Globalization.NumberStyles style) { return default(double); }
         public static double Parse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider) { return default(double); }
         public static double Parse(string s, System.IFormatProvider provider) { return default(double); }
-        int System.IComparable.CompareTo(object value) { return default(int); }
-        System.TypeCode System.IConvertible.GetTypeCode() { return default(System.TypeCode); }
+        public int CompareTo(object value) { return default(int); }
+        public System.TypeCode GetTypeCode() { return default(System.TypeCode); }
         bool System.IConvertible.ToBoolean(System.IFormatProvider provider) { return default(bool); }
         byte System.IConvertible.ToByte(System.IFormatProvider provider) { return default(byte); }
         char System.IConvertible.ToChar(System.IFormatProvider provider) { return default(char); }
@@ -833,6 +908,7 @@ namespace System
         public override int GetHashCode() { return default(int); }
         public static string GetName(System.Type enumType, object value) { return default(string); }
         public static string[] GetNames(System.Type enumType) { return default(string[]); }
+        public TypeCode GetTypeCode() { return default(TypeCode); }
         public static System.Type GetUnderlyingType(System.Type enumType) { return default(System.Type); }
         public static System.Array GetValues(System.Type enumType) { return default(System.Array); }
         public bool HasFlag(System.Enum flag) { return default(bool); }
@@ -860,6 +936,18 @@ namespace System
         [System.ObsoleteAttribute("The provider argument is not used. Please use ToString(String).")]
         string System.IFormattable.ToString(string format, System.IFormatProvider provider) { return default(string); }
         public static object ToObject(System.Type enumType, object value) { return default(object); }
+        public static object ToObject(System.Type enumType, int value) { return default(object); }
+        public static object ToObject(System.Type enumType, long value) { return default(object); }
+        public static object ToObject(System.Type enumType, byte value) { return default(object); }
+        public static object ToObject(System.Type enumType, short value) { return default(object); }
+        [CLSCompliant(false)]
+        public static object ToObject(System.Type enumType, uint value) { return default(object); }
+        [CLSCompliant(false)]
+        public static object ToObject(System.Type enumType, ulong value) { return default(object); }
+        [CLSCompliant(false)]
+        public static object ToObject(System.Type enumType, sbyte value) { return default(object); }
+        [CLSCompliant(false)]
+        public static object ToObject(System.Type enumType, ushort value) { return default(object); }
         public override string ToString() { return default(string); }
         public string ToString(string format) { return default(string); }
         public static bool TryParse<TEnum>(string value, out TEnum result) where TEnum : struct { result = default(TEnum); return default(bool); }
@@ -877,6 +965,7 @@ namespace System
         public Exception() { }
         public Exception(string message) { }
         public Exception(string message, System.Exception innerException) { }
+        protected Exception(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public virtual System.Collections.IDictionary Data { get { return default(System.Collections.IDictionary); } }
         public virtual string HelpLink { get { return default(string); } set { } }
         public int HResult { get { return default(int); } protected set { } }
@@ -885,6 +974,7 @@ namespace System
         public virtual string Source { get { return default(string); } set { } }
         public virtual string StackTrace { get { return default(string); } }
         public virtual System.Exception GetBaseException() { return default(System.Exception); }
+        public virtual void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public override string ToString() { return default(string); }
     }
     public partial class FieldAccessException : System.MemberAccessException
@@ -892,6 +982,7 @@ namespace System
         public FieldAccessException() { }
         public FieldAccessException(string message) { }
         public FieldAccessException(string message, System.Exception inner) { }
+        protected FieldAccessException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
     [System.AttributeUsageAttribute((System.AttributeTargets)(16), Inherited = false)]
     public partial class FlagsAttribute : System.Attribute
@@ -903,6 +994,7 @@ namespace System
         public FormatException() { }
         public FormatException(string message) { }
         public FormatException(string message, System.Exception innerException) { }
+        protected FormatException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
     public abstract partial class FormattableString : System.IFormattable
     {
@@ -1070,8 +1162,8 @@ namespace System
         public static short Parse(string s, System.Globalization.NumberStyles style) { return default(short); }
         public static short Parse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider) { return default(short); }
         public static short Parse(string s, System.IFormatProvider provider) { return default(short); }
-        int System.IComparable.CompareTo(object value) { return default(int); }
-        System.TypeCode System.IConvertible.GetTypeCode() { return default(System.TypeCode); }
+        public int CompareTo(object value) { return default(int); }
+        public System.TypeCode GetTypeCode() { return default(System.TypeCode); }
         bool System.IConvertible.ToBoolean(System.IFormatProvider provider) { return default(bool); }
         byte System.IConvertible.ToByte(System.IFormatProvider provider) { return default(byte); }
         char System.IConvertible.ToChar(System.IFormatProvider provider) { return default(char); }
@@ -1107,8 +1199,8 @@ namespace System
         public static int Parse(string s, System.Globalization.NumberStyles style) { return default(int); }
         public static int Parse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider) { return default(int); }
         public static int Parse(string s, System.IFormatProvider provider) { return default(int); }
-        int System.IComparable.CompareTo(object value) { return default(int); }
-        System.TypeCode System.IConvertible.GetTypeCode() { return default(System.TypeCode); }
+        public int CompareTo(object value) { return default(int); }
+        public System.TypeCode GetTypeCode() { return default(System.TypeCode); }
         bool System.IConvertible.ToBoolean(System.IFormatProvider provider) { return default(bool); }
         byte System.IConvertible.ToByte(System.IFormatProvider provider) { return default(byte); }
         char System.IConvertible.ToChar(System.IFormatProvider provider) { return default(char); }
@@ -1144,8 +1236,8 @@ namespace System
         public static long Parse(string s, System.Globalization.NumberStyles style) { return default(long); }
         public static long Parse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider) { return default(long); }
         public static long Parse(string s, System.IFormatProvider provider) { return default(long); }
-        int System.IComparable.CompareTo(object value) { return default(int); }
-        System.TypeCode System.IConvertible.GetTypeCode() { return default(System.TypeCode); }
+        public int CompareTo(object value) { return default(int); }
+        public System.TypeCode GetTypeCode() { return default(System.TypeCode); }
         bool System.IConvertible.ToBoolean(System.IFormatProvider provider) { return default(bool); }
         byte System.IConvertible.ToByte(System.IFormatProvider provider) { return default(byte); }
         char System.IConvertible.ToChar(System.IFormatProvider provider) { return default(char); }
@@ -1208,12 +1300,14 @@ namespace System
         public InvalidCastException(string message) { }
         public InvalidCastException(string message, System.Exception innerException) { }
         public InvalidCastException(string message, int errorCode) { }
+        protected InvalidCastException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
     public partial class InvalidOperationException : System.Exception
     {
         public InvalidOperationException() { }
         public InvalidOperationException(string message) { }
         public InvalidOperationException(string message, System.Exception innerException) { }
+        protected InvalidOperationException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
     public sealed partial class InvalidProgramException : System.Exception
     {
@@ -1226,6 +1320,7 @@ namespace System
         public InvalidTimeZoneException() { }
         public InvalidTimeZoneException(string message) { }
         public InvalidTimeZoneException(string message, System.Exception innerException) { }
+        protected InvalidTimeZoneException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
     public partial interface IObservable<out T>
     {
@@ -1268,32 +1363,43 @@ namespace System
         public MemberAccessException() { }
         public MemberAccessException(string message) { }
         public MemberAccessException(string message, System.Exception inner) { }
+        protected MemberAccessException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
     public partial class MethodAccessException : System.MemberAccessException
     {
         public MethodAccessException() { }
         public MethodAccessException(string message) { }
         public MethodAccessException(string message, System.Exception inner) { }
+        protected MethodAccessException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
-    public partial class MissingFieldException : System.MissingMemberException
+    public enum MidpointRounding
+    {
+        ToEven,
+        AwayFromZero,
+    }
+    public partial class MissingFieldException : System.MissingMemberException, System.Runtime.Serialization.ISerializable
     {
         public MissingFieldException() { }
         public MissingFieldException(string message) { }
         public MissingFieldException(string message, System.Exception inner) { }
+        protected MissingFieldException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
         public override string Message { get { return default(string); } }
     }
-    public partial class MissingMemberException : System.MemberAccessException
+    public partial class MissingMemberException : System.MemberAccessException, System.Runtime.Serialization.ISerializable
     {
         public MissingMemberException() { }
         public MissingMemberException(string message) { }
         public MissingMemberException(string message, System.Exception inner) { }
+        protected MissingMemberException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
         public override string Message { get { return default(string); } }
+        public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
-    public partial class MissingMethodException : System.MissingMemberException
+    public partial class MissingMethodException : System.MissingMemberException, System.Runtime.Serialization.ISerializable
     {
         public MissingMethodException() { }
         public MissingMethodException(string message) { }
         public MissingMethodException(string message, System.Exception inner) { }
+        protected MissingMethodException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
         public override string Message { get { return default(string); } }
     }
     [System.AttributeUsageAttribute((System.AttributeTargets)(64))]
@@ -1307,20 +1413,30 @@ namespace System
         public sealed override bool Equals(object obj) { return default(bool); }
         public sealed override int GetHashCode() { return default(int); }
         public sealed override System.Delegate[] GetInvocationList() { return default(System.Delegate[]); }
+        public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public static bool operator ==(System.MulticastDelegate d1, System.MulticastDelegate d2) { return default(bool); }
         public static bool operator !=(System.MulticastDelegate d1, System.MulticastDelegate d2) { return default(bool); }
+    }
+    [AttributeUsage(AttributeTargets.Field, Inherited = false)]
+    public sealed class NonSerializedAttribute : Attribute
+    {
+        public NonSerializedAttribute()
+        {
+        }
     }
     public partial class NotImplementedException : System.Exception
     {
         public NotImplementedException() { }
         public NotImplementedException(string message) { }
         public NotImplementedException(string message, System.Exception inner) { }
+        protected NotImplementedException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
     public partial class NotSupportedException : System.Exception
     {
         public NotSupportedException() { }
         public NotSupportedException(string message) { }
         public NotSupportedException(string message, System.Exception innerException) { }
+        protected NotSupportedException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
     public static partial class Nullable
     {
@@ -1347,6 +1463,7 @@ namespace System
         public NullReferenceException() { }
         public NullReferenceException(string message) { }
         public NullReferenceException(string message, System.Exception innerException) { }
+        protected NullReferenceException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
     public partial class Object
     {
@@ -1365,8 +1482,10 @@ namespace System
         public ObjectDisposedException(string objectName) { }
         public ObjectDisposedException(string message, System.Exception innerException) { }
         public ObjectDisposedException(string objectName, string message) { }
+        protected ObjectDisposedException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
         public override string Message { get { return default(string); } }
         public string ObjectName { get { return default(string); } }
+        public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
     [System.AttributeUsageAttribute((System.AttributeTargets)(6140), Inherited = false)]
     public sealed partial class ObsoleteAttribute : System.Attribute
@@ -1399,6 +1518,7 @@ namespace System
         public PlatformNotSupportedException() { }
         public PlatformNotSupportedException(string message) { }
         public PlatformNotSupportedException(string message, System.Exception inner) { }
+        protected PlatformNotSupportedException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
     public delegate bool Predicate<in T>(T obj);
     public partial class RankException : System.Exception
@@ -1406,31 +1526,35 @@ namespace System
         public RankException() { }
         public RankException(string message) { }
         public RankException(string message, System.Exception innerException) { }
+        protected RankException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
     [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential)]
-    public partial struct RuntimeFieldHandle
+    public partial struct RuntimeFieldHandle : System.Runtime.Serialization.ISerializable
     {
         public override bool Equals(object obj) { return default(bool); }
         public bool Equals(System.RuntimeFieldHandle handle) { return default(bool); }
         public override int GetHashCode() { return default(int); }
+        public void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public static bool operator ==(System.RuntimeFieldHandle left, System.RuntimeFieldHandle right) { return default(bool); }
         public static bool operator !=(System.RuntimeFieldHandle left, System.RuntimeFieldHandle right) { return default(bool); }
     }
     [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential)]
-    public partial struct RuntimeMethodHandle
+    public partial struct RuntimeMethodHandle : System.Runtime.Serialization.ISerializable
     {
         public override bool Equals(object obj) { return default(bool); }
         public bool Equals(System.RuntimeMethodHandle handle) { return default(bool); }
         public override int GetHashCode() { return default(int); }
+        public void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public static bool operator ==(System.RuntimeMethodHandle left, System.RuntimeMethodHandle right) { return default(bool); }
         public static bool operator !=(System.RuntimeMethodHandle left, System.RuntimeMethodHandle right) { return default(bool); }
     }
     [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential)]
-    public partial struct RuntimeTypeHandle
+    public partial struct RuntimeTypeHandle : System.Runtime.Serialization.ISerializable
     {
         public override bool Equals(object obj) { return default(bool); }
         public bool Equals(System.RuntimeTypeHandle handle) { return default(bool); }
         public override int GetHashCode() { return default(int); }
+        public void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public static bool operator ==(object left, System.RuntimeTypeHandle right) { return default(bool); }
         public static bool operator ==(System.RuntimeTypeHandle left, object right) { return default(bool); }
         public static bool operator !=(object left, System.RuntimeTypeHandle right) { return default(bool); }
@@ -1454,8 +1578,8 @@ namespace System
         public static sbyte Parse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider) { return default(sbyte); }
         [System.CLSCompliantAttribute(false)]
         public static sbyte Parse(string s, System.IFormatProvider provider) { return default(sbyte); }
-        int System.IComparable.CompareTo(object obj) { return default(int); }
-        System.TypeCode System.IConvertible.GetTypeCode() { return default(System.TypeCode); }
+        public int CompareTo(object obj) { return default(int); }
+        public System.TypeCode GetTypeCode() { return default(System.TypeCode); }
         bool System.IConvertible.ToBoolean(System.IFormatProvider provider) { return default(bool); }
         byte System.IConvertible.ToByte(System.IFormatProvider provider) { return default(byte); }
         char System.IConvertible.ToChar(System.IFormatProvider provider) { return default(char); }
@@ -1480,6 +1604,13 @@ namespace System
         [System.CLSCompliantAttribute(false)]
         public static bool TryParse(string s, out sbyte result) { result = default(sbyte); return default(bool); }
     }
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Enum | AttributeTargets.Delegate, Inherited = false)]
+    public sealed class SerializableAttribute : Attribute
+    {
+        public SerializableAttribute()
+        {
+        }
+    }
     [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential)]
     public partial struct Single : System.IComparable, System.IComparable<float>, System.IConvertible, System.IEquatable<float>, System.IFormattable
     {
@@ -1501,8 +1632,8 @@ namespace System
         public static float Parse(string s, System.Globalization.NumberStyles style) { return default(float); }
         public static float Parse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider) { return default(float); }
         public static float Parse(string s, System.IFormatProvider provider) { return default(float); }
-        int System.IComparable.CompareTo(object value) { return default(int); }
-        System.TypeCode System.IConvertible.GetTypeCode() { return default(System.TypeCode); }
+        public int CompareTo(object value) { return default(int); }
+        public System.TypeCode GetTypeCode() { return default(System.TypeCode); }
         bool System.IConvertible.ToBoolean(System.IFormatProvider provider) { return default(bool); }
         byte System.IConvertible.ToByte(System.IFormatProvider provider) { return default(byte); }
         char System.IConvertible.ToChar(System.IFormatProvider provider) { return default(char); }
@@ -1690,6 +1821,7 @@ namespace System
         public TimeoutException() { }
         public TimeoutException(string message) { }
         public TimeoutException(string message, System.Exception innerException) { }
+        protected TimeoutException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
     [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential)]
     public partial struct TimeSpan : System.IComparable, System.IComparable<System.TimeSpan>, System.IEquatable<System.TimeSpan>, System.IFormattable
@@ -1760,7 +1892,7 @@ namespace System
         public static bool TryParseExact(string input, string[] formats, System.IFormatProvider formatProvider, System.Globalization.TimeSpanStyles styles, out System.TimeSpan result) { result = default(System.TimeSpan); return default(bool); }
         public static bool TryParseExact(string input, string[] formats, System.IFormatProvider formatProvider, out System.TimeSpan result) { result = default(System.TimeSpan); return default(bool); }
     }
-    public sealed partial class TimeZoneInfo : System.IEquatable<System.TimeZoneInfo>
+    public sealed partial class TimeZoneInfo : System.IEquatable<System.TimeZoneInfo>, System.Runtime.Serialization.ISerializable, System.Runtime.Serialization.IDeserializationCallback
     {
         internal TimeZoneInfo() { }
         public System.TimeSpan BaseUtcOffset { get { return default(System.TimeSpan); } }
@@ -1771,23 +1903,80 @@ namespace System
         public string StandardName { get { return default(string); } }
         public bool SupportsDaylightSavingTime { get { return default(bool); } }
         public static System.TimeZoneInfo Utc { get { return default(System.TimeZoneInfo); } }
+        public static void ClearCachedData() { }
         public static System.DateTime ConvertTime(System.DateTime dateTime, System.TimeZoneInfo destinationTimeZone) { return default(System.DateTime); }
         public static System.DateTime ConvertTime(System.DateTime dateTime, System.TimeZoneInfo sourceTimeZone, System.TimeZoneInfo destinationTimeZone) { return default(System.DateTime); }
         public static System.DateTimeOffset ConvertTime(System.DateTimeOffset dateTimeOffset, System.TimeZoneInfo destinationTimeZone) { return default(System.DateTimeOffset); }
+        public static System.DateTime ConvertTimeFromUtc(System.DateTime dateTime, System.TimeZoneInfo destinationTimeZone) { return default(System.DateTime); }
+        public static System.DateTime ConvertTimeToUtc(System.DateTime dateTime) { return default(System.DateTime); }
+        public static System.DateTime ConvertTimeToUtc(System.DateTime dateTime, System.TimeZoneInfo sourceTimeZone) { return default(System.DateTime); }
+        public static System.TimeZoneInfo CreateCustomTimeZone(string id, System.TimeSpan baseUtcOffset, string displayName, string standardDisplayName) { return default(System.TimeZoneInfo); }
+        public static System.TimeZoneInfo CreateCustomTimeZone(string id, System.TimeSpan baseUtcOffset, string displayName, string standardDisplayName, string daylightDisplayName, System.TimeZoneInfo.AdjustmentRule[] adjustmentRules) { return default(System.TimeZoneInfo); }
+        public static System.TimeZoneInfo CreateCustomTimeZone(string id, System.TimeSpan baseUtcOffset, string displayName, string standardDisplayName, string daylightDisplayName, System.TimeZoneInfo.AdjustmentRule[] adjustmentRules, bool disableDaylightSavingTime) { return default(System.TimeZoneInfo); }
+        public override bool Equals(object obj) { return default(bool); }
         public bool Equals(System.TimeZoneInfo other) { return default(bool); }
         public static System.TimeZoneInfo FindSystemTimeZoneById(string id) { return default(System.TimeZoneInfo); }
+        public static System.TimeZoneInfo FromSerializedString(string source) { return default(System.TimeZoneInfo); }
+        public System.TimeZoneInfo.AdjustmentRule[] GetAdjustmentRules() { return default(System.TimeZoneInfo.AdjustmentRule[]); }
         public System.TimeSpan[] GetAmbiguousTimeOffsets(System.DateTime dateTime) { return default(System.TimeSpan[]); }
         public System.TimeSpan[] GetAmbiguousTimeOffsets(System.DateTimeOffset dateTimeOffset) { return default(System.TimeSpan[]); }
         public override int GetHashCode() { return default(int); }
         public static System.Collections.ObjectModel.ReadOnlyCollection<System.TimeZoneInfo> GetSystemTimeZones() { return default(System.Collections.ObjectModel.ReadOnlyCollection<System.TimeZoneInfo>); }
         public System.TimeSpan GetUtcOffset(System.DateTime dateTime) { return default(System.TimeSpan); }
         public System.TimeSpan GetUtcOffset(System.DateTimeOffset dateTimeOffset) { return default(System.TimeSpan); }
+        public bool HasSameRules(System.TimeZoneInfo other) { return default(bool); }
         public bool IsAmbiguousTime(System.DateTime dateTime) { return default(bool); }
         public bool IsAmbiguousTime(System.DateTimeOffset dateTimeOffset) { return default(bool); }
         public bool IsDaylightSavingTime(System.DateTime dateTime) { return default(bool); }
         public bool IsDaylightSavingTime(System.DateTimeOffset dateTimeOffset) { return default(bool); }
         public bool IsInvalidTime(System.DateTime dateTime) { return default(bool); }
+        public string ToSerializedString() { return default(string); }
         public override string ToString() { return default(string); }
+        void System.Runtime.Serialization.IDeserializationCallback.OnDeserialization(object sender) { }
+        [System.Security.SecurityCriticalAttribute]
+        void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
+        public sealed partial class AdjustmentRule : System.IEquatable<System.TimeZoneInfo.AdjustmentRule>, System.Runtime.Serialization.IDeserializationCallback, System.Runtime.Serialization.ISerializable
+        {
+            internal AdjustmentRule() { }
+            public System.DateTime DateEnd { get { throw null; } }
+            public System.DateTime DateStart { get { throw null; } }
+            public System.TimeSpan DaylightDelta { get { throw null; } }
+            public System.TimeZoneInfo.TransitionTime DaylightTransitionEnd { get { throw null; } }
+            public System.TimeZoneInfo.TransitionTime DaylightTransitionStart { get { throw null; } }
+            public static System.TimeZoneInfo.AdjustmentRule CreateAdjustmentRule(System.DateTime dateStart, System.DateTime dateEnd, System.TimeSpan daylightDelta, System.TimeZoneInfo.TransitionTime daylightTransitionStart, System.TimeZoneInfo.TransitionTime daylightTransitionEnd) { throw null; }
+            public bool Equals(System.TimeZoneInfo.AdjustmentRule other) { throw null; }
+            public override int GetHashCode() { throw null; }
+            void System.Runtime.Serialization.IDeserializationCallback.OnDeserialization(object sender) { }
+            [System.Security.SecurityCriticalAttribute]
+            void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
+        }
+        [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential)]
+        public partial struct TransitionTime : System.IEquatable<System.TimeZoneInfo.TransitionTime>, System.Runtime.Serialization.IDeserializationCallback, System.Runtime.Serialization.ISerializable
+        {
+            public int Day { get { throw null; } }
+            public System.DayOfWeek DayOfWeek { get { throw null; } }
+            public bool IsFixedDateRule { get { throw null; } }
+            public int Month { get { throw null; } }
+            public System.DateTime TimeOfDay { get { throw null; } }
+            public int Week { get { throw null; } }
+            public static System.TimeZoneInfo.TransitionTime CreateFixedDateRule(System.DateTime timeOfDay, int month, int day) { throw null; }
+            public static System.TimeZoneInfo.TransitionTime CreateFloatingDateRule(System.DateTime timeOfDay, int month, int week, System.DayOfWeek dayOfWeek) { throw null; }
+            public override bool Equals(object obj) { throw null; }
+            public bool Equals(System.TimeZoneInfo.TransitionTime other) { throw null; }
+            public override int GetHashCode() { throw null; }
+            public static bool operator ==(System.TimeZoneInfo.TransitionTime t1, System.TimeZoneInfo.TransitionTime t2) { throw null; }
+            public static bool operator !=(System.TimeZoneInfo.TransitionTime t1, System.TimeZoneInfo.TransitionTime t2) { throw null; }
+            void System.Runtime.Serialization.IDeserializationCallback.OnDeserialization(object sender) { }
+            [System.Security.SecurityCriticalAttribute]
+            void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
+        }
+    }
+    public partial class TimeZoneNotFoundException : System.Exception
+    {
+        public TimeZoneNotFoundException() { }
+        protected TimeZoneNotFoundException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
+        public TimeZoneNotFoundException(string message) { }
+        public TimeZoneNotFoundException(string message, System.Exception innerException) { }
     }
     public static partial class Tuple
     {
@@ -1966,6 +2155,7 @@ namespace System
         public TypeAccessException() { }
         public TypeAccessException(string message) { }
         public TypeAccessException(string message, System.Exception inner) { }
+        protected TypeAccessException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
     public enum TypeCode
     {
@@ -1991,14 +2181,17 @@ namespace System
     {
         public TypeInitializationException(string fullTypeName, System.Exception innerException) { }
         public string TypeName { get { return default(string); } }
+        public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
-    public partial class TypeLoadException : System.Exception
+    public partial class TypeLoadException : System.Exception, System.Runtime.Serialization.ISerializable
     {
         public TypeLoadException() { }
         public TypeLoadException(string message) { }
         public TypeLoadException(string message, System.Exception inner) { }
+        protected TypeLoadException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
         public override string Message { get { return default(string); } }
         public string TypeName { get { return default(string); } }
+        public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
     }
     [System.CLSCompliantAttribute(false)]
     [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential)]
@@ -2018,8 +2211,8 @@ namespace System
         public static ushort Parse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider) { return default(ushort); }
         [System.CLSCompliantAttribute(false)]
         public static ushort Parse(string s, System.IFormatProvider provider) { return default(ushort); }
-        int System.IComparable.CompareTo(object value) { return default(int); }
-        System.TypeCode System.IConvertible.GetTypeCode() { return default(System.TypeCode); }
+        public int CompareTo(object value) { return default(int); }
+        public System.TypeCode GetTypeCode() { return default(System.TypeCode); }
         bool System.IConvertible.ToBoolean(System.IFormatProvider provider) { return default(bool); }
         byte System.IConvertible.ToByte(System.IFormatProvider provider) { return default(byte); }
         char System.IConvertible.ToChar(System.IFormatProvider provider) { return default(char); }
@@ -2062,8 +2255,8 @@ namespace System
         public static uint Parse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider) { return default(uint); }
         [System.CLSCompliantAttribute(false)]
         public static uint Parse(string s, System.IFormatProvider provider) { return default(uint); }
-        int System.IComparable.CompareTo(object value) { return default(int); }
-        System.TypeCode System.IConvertible.GetTypeCode() { return default(System.TypeCode); }
+        public int CompareTo(object value) { return default(int); }
+        public System.TypeCode GetTypeCode() { return default(System.TypeCode); }
         bool System.IConvertible.ToBoolean(System.IFormatProvider provider) { return default(bool); }
         byte System.IConvertible.ToByte(System.IFormatProvider provider) { return default(byte); }
         char System.IConvertible.ToChar(System.IFormatProvider provider) { return default(char); }
@@ -2106,8 +2299,8 @@ namespace System
         public static ulong Parse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider) { return default(ulong); }
         [System.CLSCompliantAttribute(false)]
         public static ulong Parse(string s, System.IFormatProvider provider) { return default(ulong); }
-        int System.IComparable.CompareTo(object value) { return default(int); }
-        System.TypeCode System.IConvertible.GetTypeCode() { return default(System.TypeCode); }
+        public int CompareTo(object value) { return default(int); }
+        public System.TypeCode GetTypeCode() { return default(System.TypeCode); }
         bool System.IConvertible.ToBoolean(System.IFormatProvider provider) { return default(bool); }
         byte System.IConvertible.ToByte(System.IFormatProvider provider) { return default(byte); }
         char System.IConvertible.ToChar(System.IFormatProvider provider) { return default(char); }
@@ -2172,6 +2365,7 @@ namespace System
         public UnauthorizedAccessException() { }
         public UnauthorizedAccessException(string message) { }
         public UnauthorizedAccessException(string message, System.Exception inner) { }
+        protected UnauthorizedAccessException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
     public partial class Uri
     {
@@ -2325,6 +2519,7 @@ namespace System
         public Version(int major, int minor, int build) { }
         public Version(int major, int minor, int build, int revision) { }
         public Version(string version) { }
+        public Version() { }
         public int Build { get { return default(int); } }
         public int Major { get { return default(int); } }
         public short MajorRevision { get { return default(short); } }
@@ -2351,24 +2546,41 @@ namespace System
     public partial struct Void
     {
     }
-    public partial class WeakReference
+    public partial class WeakReference : System.Runtime.Serialization.ISerializable
     {
         public WeakReference(object target) { }
         public WeakReference(object target, bool trackResurrection) { }
+        protected WeakReference(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public virtual bool IsAlive { get { return default(bool); } }
+        public virtual void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public virtual object Target { get { return default(object); } set { } }
         public virtual bool TrackResurrection { get { return default(bool); } }
         ~WeakReference() { }
     }
-    public sealed partial class WeakReference<T> where T : class
+    public sealed partial class WeakReference<T> : System.Runtime.Serialization.ISerializable where T : class
     {
         public WeakReference(T target) { }
         public WeakReference(T target, bool trackResurrection) { }
         ~WeakReference() { }
+        public void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public void SetTarget(T target) { }
         public bool TryGetTarget(out T target) { target = default(T); return default(bool); }
     }
 }
+
+namespace System.Runtime.InteropServices
+{
+    public partial class ExternalException : System.SystemException
+    {
+        public ExternalException() { }
+        public ExternalException(string message) { }
+        public ExternalException(string message, Exception inner) { }
+        public ExternalException(string message, int errorCode) { }
+        protected ExternalException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
+        public virtual int ErrorCode { get; }
+    }
+}
+
 namespace System.Collections
 {
     [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential)]
@@ -2522,11 +2734,12 @@ namespace System.Collections.Generic
         void SymmetricExceptWith(System.Collections.Generic.IEnumerable<T> other);
         void UnionWith(System.Collections.Generic.IEnumerable<T> other);
     }
-    public partial class KeyNotFoundException : System.Exception
+    public partial class KeyNotFoundException : System.Exception, System.Runtime.Serialization.ISerializable
     {
         public KeyNotFoundException() { }
         public KeyNotFoundException(string message) { }
         public KeyNotFoundException(string message, System.Exception innerException) { }
+        protected KeyNotFoundException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
     [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential)]
     public partial struct KeyValuePair<TKey, TValue>
@@ -2683,6 +2896,7 @@ namespace System.Globalization
         public virtual System.DateTime AddSeconds(System.DateTime time, int seconds) { return default(System.DateTime); }
         public virtual System.DateTime AddWeeks(System.DateTime time, int weeks) { return default(System.DateTime); }
         public abstract System.DateTime AddYears(System.DateTime time, int years);
+        public virtual object Clone() { return default(object); }
         public abstract int GetDayOfMonth(System.DateTime time);
         public abstract System.DayOfWeek GetDayOfWeek(System.DateTime time);
         public abstract int GetDayOfYear(System.DateTime time);
@@ -2692,6 +2906,7 @@ namespace System.Globalization
         public abstract int GetDaysInYear(int year, int era);
         public abstract int GetEra(System.DateTime time);
         public virtual int GetHour(System.DateTime time) { return default(int); }
+        public virtual int GetLeapMonth(int year) { return default(int); }
         public virtual int GetLeapMonth(int year, int era) { return default(int); }
         public virtual double GetMilliseconds(System.DateTime time) { return default(double); }
         public virtual int GetMinute(System.DateTime time) { return default(int); }
@@ -2707,15 +2922,359 @@ namespace System.Globalization
         public abstract bool IsLeapMonth(int year, int month, int era);
         public virtual bool IsLeapYear(int year) { return default(bool); }
         public abstract bool IsLeapYear(int year, int era);
+        public static System.Globalization.Calendar ReadOnly(System.Globalization.Calendar calendar) { return default(System.Globalization.Calendar); }
         public virtual System.DateTime ToDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond) { return default(System.DateTime); }
         public abstract System.DateTime ToDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int era);
         public virtual int ToFourDigitYear(int year) { return default(int); }
+    }
+    public enum CalendarAlgorithmType
+    {
+        LunarCalendar = 2,
+        LunisolarCalendar = 3,
+        SolarCalendar = 1,
+        Unknown = 0,
     }
     public enum CalendarWeekRule
     {
         FirstDay = 0,
         FirstFourDayWeek = 2,
         FirstFullWeek = 1,
+    }
+    public partial class ChineseLunisolarCalendar : System.Globalization.EastAsianLunisolarCalendar
+    {
+        public ChineseLunisolarCalendar() { }
+        public override int[] Eras { get { return default(int[]); } }
+        public override System.DateTime MaxSupportedDateTime { get { return default(System.DateTime); } }
+        public override System.DateTime MinSupportedDateTime { get { return default(System.DateTime); } }
+        public override int GetEra(System.DateTime time) { return default(int); }
+    }
+    public abstract partial class EastAsianLunisolarCalendar : System.Globalization.Calendar
+    {
+        internal EastAsianLunisolarCalendar() { }
+        public override int TwoDigitYearMax { get { return default(int); } set { } }
+        public override System.DateTime AddMonths(System.DateTime time, int months) { return default(System.DateTime); }
+        public override System.DateTime AddYears(System.DateTime time, int years) { return default(System.DateTime); }
+        public int GetCelestialStem(int sexagenaryYear) { return default(int); }
+        public override int GetDayOfMonth(System.DateTime time) { return default(int); }
+        public override System.DayOfWeek GetDayOfWeek(System.DateTime time) { return default(System.DayOfWeek); }
+        public override int GetDayOfYear(System.DateTime time) { return default(int); }
+        public override int GetDaysInMonth(int year, int month, int era) { return default(int); }
+        public override int GetDaysInYear(int year, int era) { return default(int); }
+        public override int GetLeapMonth(int year, int era) { return default(int); }
+        public override int GetMonth(System.DateTime time) { return default(int); }
+        public override int GetMonthsInYear(int year, int era) { return default(int); }
+        public virtual int GetSexagenaryYear(System.DateTime time) { return default(int); }
+        public int GetTerrestrialBranch(int sexagenaryYear) { return default(int); }
+        public override int GetYear(System.DateTime time) { return default(int); }
+        public override bool IsLeapDay(int year, int month, int day, int era) { return default(bool); }
+        public override bool IsLeapMonth(int year, int month, int era) { return default(bool); }
+        public override bool IsLeapYear(int year, int era) { return default(bool); }
+        public override System.DateTime ToDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int era) { return default(System.DateTime); }
+        public override int ToFourDigitYear(int year) { return default(int); }
+    }
+    public partial class GregorianCalendar : System.Globalization.Calendar
+    {
+        public GregorianCalendar() { }
+        public GregorianCalendar(System.Globalization.GregorianCalendarTypes type) { }
+        public virtual System.Globalization.GregorianCalendarTypes CalendarType { get { return default(System.Globalization.GregorianCalendarTypes); } set { } }
+        public override int[] Eras { get { return default(int[]); } }
+        public override System.DateTime MaxSupportedDateTime { get { return default(System.DateTime); } }
+        public override System.DateTime MinSupportedDateTime { get { return default(System.DateTime); } }
+        public override int TwoDigitYearMax { get { return default(int); } set { } }
+        public override System.DateTime AddMonths(System.DateTime time, int months) { return default(System.DateTime); }
+        public override System.DateTime AddYears(System.DateTime time, int years) { return default(System.DateTime); }
+        public override int GetDayOfMonth(System.DateTime time) { return default(int); }
+        public override System.DayOfWeek GetDayOfWeek(System.DateTime time) { return default(System.DayOfWeek); }
+        public override int GetDayOfYear(System.DateTime time) { return default(int); }
+        public override int GetDaysInMonth(int year, int month, int era) { return default(int); }
+        public override int GetDaysInYear(int year, int era) { return default(int); }
+        public override int GetEra(System.DateTime time) { return default(int); }
+        public override int GetLeapMonth(int year, int era) { return default(int); }
+        public override int GetMonth(System.DateTime time) { return default(int); }
+        public override int GetMonthsInYear(int year, int era) { return default(int); }
+        public override int GetYear(System.DateTime time) { return default(int); }
+        public override bool IsLeapDay(int year, int month, int day, int era) { return default(bool); }
+        public override bool IsLeapMonth(int year, int month, int era) { return default(bool); }
+        public override bool IsLeapYear(int year, int era) { return default(bool); }
+        public override System.DateTime ToDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int era) { return default(System.DateTime); }
+        public override int ToFourDigitYear(int year) { return default(int); }
+    }
+    public enum GregorianCalendarTypes
+    {
+        Arabic = 10,
+        Localized = 1,
+        MiddleEastFrench = 9,
+        TransliteratedEnglish = 11,
+        TransliteratedFrench = 12,
+        USEnglish = 2,
+    }
+    public partial class HebrewCalendar : System.Globalization.Calendar
+    {
+        public static readonly int HebrewEra;
+        public HebrewCalendar() { }
+        public override int[] Eras { get { return default(int[]); } }
+        public override System.DateTime MaxSupportedDateTime { get { return default(System.DateTime); } }
+        public override System.DateTime MinSupportedDateTime { get { return default(System.DateTime); } }
+        public override int TwoDigitYearMax { get { return default(int); } set { } }
+        public override System.DateTime AddMonths(System.DateTime time, int months) { return default(System.DateTime); }
+        public override System.DateTime AddYears(System.DateTime time, int years) { return default(System.DateTime); }
+        public override int GetDayOfMonth(System.DateTime time) { return default(int); }
+        public override System.DayOfWeek GetDayOfWeek(System.DateTime time) { return default(System.DayOfWeek); }
+        public override int GetDayOfYear(System.DateTime time) { return default(int); }
+        public override int GetDaysInMonth(int year, int month, int era) { return default(int); }
+        public override int GetDaysInYear(int year, int era) { return default(int); }
+        public override int GetEra(System.DateTime time) { return default(int); }
+        public override int GetLeapMonth(int year, int era) { return default(int); }
+        public override int GetMonth(System.DateTime time) { return default(int); }
+        public override int GetMonthsInYear(int year, int era) { return default(int); }
+        public override int GetYear(System.DateTime time) { return default(int); }
+        public override bool IsLeapDay(int year, int month, int day, int era) { return default(bool); }
+        public override bool IsLeapMonth(int year, int month, int era) { return default(bool); }
+        public override bool IsLeapYear(int year, int era) { return default(bool); }
+        public override System.DateTime ToDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int era) { return default(System.DateTime); }
+        public override int ToFourDigitYear(int year) { return default(int); }
+    }
+    public partial class HijriCalendar : System.Globalization.Calendar
+    {
+        public static readonly int HijriEra;
+        public HijriCalendar() { }
+        public override int[] Eras { get { return default(int[]); } }
+        public int HijriAdjustment { get { return default(int); } set { } }
+        public override System.DateTime MaxSupportedDateTime { get { return default(System.DateTime); } }
+        public override System.DateTime MinSupportedDateTime { get { return default(System.DateTime); } }
+        public override int TwoDigitYearMax { get { return default(int); } set { } }
+        public override System.DateTime AddMonths(System.DateTime time, int months) { return default(System.DateTime); }
+        public override System.DateTime AddYears(System.DateTime time, int years) { return default(System.DateTime); }
+        public override int GetDayOfMonth(System.DateTime time) { return default(int); }
+        public override System.DayOfWeek GetDayOfWeek(System.DateTime time) { return default(System.DayOfWeek); }
+        public override int GetDayOfYear(System.DateTime time) { return default(int); }
+        public override int GetDaysInMonth(int year, int month, int era) { return default(int); }
+        public override int GetDaysInYear(int year, int era) { return default(int); }
+        public override int GetEra(System.DateTime time) { return default(int); }
+        public override int GetLeapMonth(int year, int era) { return default(int); }
+        public override int GetMonth(System.DateTime time) { return default(int); }
+        public override int GetMonthsInYear(int year, int era) { return default(int); }
+        public override int GetYear(System.DateTime time) { return default(int); }
+        public override bool IsLeapDay(int year, int month, int day, int era) { return default(bool); }
+        public override bool IsLeapMonth(int year, int month, int era) { return default(bool); }
+        public override bool IsLeapYear(int year, int era) { return default(bool); }
+        public override System.DateTime ToDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int era) { return default(System.DateTime); }
+        public override int ToFourDigitYear(int year) { return default(int); }
+    }
+    public partial class JapaneseCalendar : System.Globalization.Calendar
+    {
+        public JapaneseCalendar() { }
+        public override int[] Eras { get { return default(int[]); } }
+        public override System.DateTime MaxSupportedDateTime { get { return default(System.DateTime); } }
+        public override System.DateTime MinSupportedDateTime { get { return default(System.DateTime); } }
+        public override int TwoDigitYearMax { get { return default(int); } set { } }
+        public override System.DateTime AddMonths(System.DateTime time, int months) { return default(System.DateTime); }
+        public override System.DateTime AddYears(System.DateTime time, int years) { return default(System.DateTime); }
+        public override int GetDayOfMonth(System.DateTime time) { return default(int); }
+        public override System.DayOfWeek GetDayOfWeek(System.DateTime time) { return default(System.DayOfWeek); }
+        public override int GetDayOfYear(System.DateTime time) { return default(int); }
+        public override int GetDaysInMonth(int year, int month, int era) { return default(int); }
+        public override int GetDaysInYear(int year, int era) { return default(int); }
+        public override int GetEra(System.DateTime time) { return default(int); }
+        public override int GetLeapMonth(int year, int era) { return default(int); }
+        public override int GetMonth(System.DateTime time) { return default(int); }
+        public override int GetMonthsInYear(int year, int era) { return default(int); }
+        public override int GetWeekOfYear(System.DateTime time, System.Globalization.CalendarWeekRule rule, System.DayOfWeek firstDayOfWeek) { return default(int); }
+        public override int GetYear(System.DateTime time) { return default(int); }
+        public override bool IsLeapDay(int year, int month, int day, int era) { return default(bool); }
+        public override bool IsLeapMonth(int year, int month, int era) { return default(bool); }
+        public override bool IsLeapYear(int year, int era) { return default(bool); }
+        public override System.DateTime ToDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int era) { return default(System.DateTime); }
+        public override int ToFourDigitYear(int year) { return default(int); }
+    }
+    public partial class JapaneseLunisolarCalendar : System.Globalization.EastAsianLunisolarCalendar
+    {
+        public JapaneseLunisolarCalendar() { }
+        public override int[] Eras { get { return default(int[]); } }
+        public override System.DateTime MaxSupportedDateTime { get { return default(System.DateTime); } }
+        public override System.DateTime MinSupportedDateTime { get { return default(System.DateTime); } }
+        public override int GetEra(System.DateTime time) { return default(int); }
+    }
+    public partial class JulianCalendar : System.Globalization.Calendar
+    {
+        public JulianCalendar() { }
+        public override int[] Eras { get { return default(int[]); } }
+        public override System.DateTime MaxSupportedDateTime { get { return default(System.DateTime); } }
+        public override System.DateTime MinSupportedDateTime { get { return default(System.DateTime); } }
+        public override int TwoDigitYearMax { get { return default(int); } set { } }
+        public override System.DateTime AddMonths(System.DateTime time, int months) { return default(System.DateTime); }
+        public override System.DateTime AddYears(System.DateTime time, int years) { return default(System.DateTime); }
+        public override int GetDayOfMonth(System.DateTime time) { return default(int); }
+        public override System.DayOfWeek GetDayOfWeek(System.DateTime time) { return default(System.DayOfWeek); }
+        public override int GetDayOfYear(System.DateTime time) { return default(int); }
+        public override int GetDaysInMonth(int year, int month, int era) { return default(int); }
+        public override int GetDaysInYear(int year, int era) { return default(int); }
+        public override int GetEra(System.DateTime time) { return default(int); }
+        public override int GetLeapMonth(int year, int era) { return default(int); }
+        public override int GetMonth(System.DateTime time) { return default(int); }
+        public override int GetMonthsInYear(int year, int era) { return default(int); }
+        public override int GetYear(System.DateTime time) { return default(int); }
+        public override bool IsLeapDay(int year, int month, int day, int era) { return default(bool); }
+        public override bool IsLeapMonth(int year, int month, int era) { return default(bool); }
+        public override bool IsLeapYear(int year, int era) { return default(bool); }
+        public override System.DateTime ToDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int era) { return default(System.DateTime); }
+        public override int ToFourDigitYear(int year) { return default(int); }
+    }
+    public partial class KoreanCalendar : System.Globalization.Calendar
+    {
+        public KoreanCalendar() { }
+        public override int[] Eras { get { return default(int[]); } }
+        public override System.DateTime MaxSupportedDateTime { get { return default(System.DateTime); } }
+        public override System.DateTime MinSupportedDateTime { get { return default(System.DateTime); } }
+        public override int TwoDigitYearMax { get { return default(int); } set { } }
+        public override System.DateTime AddMonths(System.DateTime time, int months) { return default(System.DateTime); }
+        public override System.DateTime AddYears(System.DateTime time, int years) { return default(System.DateTime); }
+        public override int GetDayOfMonth(System.DateTime time) { return default(int); }
+        public override System.DayOfWeek GetDayOfWeek(System.DateTime time) { return default(System.DayOfWeek); }
+        public override int GetDayOfYear(System.DateTime time) { return default(int); }
+        public override int GetDaysInMonth(int year, int month, int era) { return default(int); }
+        public override int GetDaysInYear(int year, int era) { return default(int); }
+        public override int GetEra(System.DateTime time) { return default(int); }
+        public override int GetLeapMonth(int year, int era) { return default(int); }
+        public override int GetMonth(System.DateTime time) { return default(int); }
+        public override int GetMonthsInYear(int year, int era) { return default(int); }
+        public override int GetWeekOfYear(System.DateTime time, System.Globalization.CalendarWeekRule rule, System.DayOfWeek firstDayOfWeek) { return default(int); }
+        public override int GetYear(System.DateTime time) { return default(int); }
+        public override bool IsLeapDay(int year, int month, int day, int era) { return default(bool); }
+        public override bool IsLeapMonth(int year, int month, int era) { return default(bool); }
+        public override bool IsLeapYear(int year, int era) { return default(bool); }
+        public override System.DateTime ToDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int era) { return default(System.DateTime); }
+        public override int ToFourDigitYear(int year) { return default(int); }
+    }
+    public partial class KoreanLunisolarCalendar : System.Globalization.EastAsianLunisolarCalendar
+    {
+        public KoreanLunisolarCalendar() { }
+        public override int[] Eras { get { return default(int[]); } }
+        public override System.DateTime MaxSupportedDateTime { get { return default(System.DateTime); } }
+        public override System.DateTime MinSupportedDateTime { get { return default(System.DateTime); } }
+        public override int GetEra(System.DateTime time) { return default(int); }
+    }
+    public partial class PersianCalendar : System.Globalization.Calendar
+    {
+        public PersianCalendar() { }
+        public override int[] Eras { get { return default(int[]); } }
+        public override System.DateTime MaxSupportedDateTime { get { return default(System.DateTime); } }
+        public override System.DateTime MinSupportedDateTime { get { return default(System.DateTime); } }
+        public override int TwoDigitYearMax { get { return default(int); } set { } }
+        public override System.DateTime AddMonths(System.DateTime time, int months) { return default(System.DateTime); }
+        public override System.DateTime AddYears(System.DateTime time, int years) { return default(System.DateTime); }
+        public override int GetDayOfMonth(System.DateTime time) { return default(int); }
+        public override System.DayOfWeek GetDayOfWeek(System.DateTime time) { return default(System.DayOfWeek); }
+        public override int GetDayOfYear(System.DateTime time) { return default(int); }
+        public override int GetDaysInMonth(int year, int month, int era) { return default(int); }
+        public override int GetDaysInYear(int year, int era) { return default(int); }
+        public override int GetEra(System.DateTime time) { return default(int); }
+        public override int GetLeapMonth(int year, int era) { return default(int); }
+        public override int GetMonth(System.DateTime time) { return default(int); }
+        public override int GetMonthsInYear(int year, int era) { return default(int); }
+        public override int GetYear(System.DateTime time) { return default(int); }
+        public override bool IsLeapDay(int year, int month, int day, int era) { return default(bool); }
+        public override bool IsLeapMonth(int year, int month, int era) { return default(bool); }
+        public override bool IsLeapYear(int year, int era) { return default(bool); }
+        public override System.DateTime ToDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int era) { return default(System.DateTime); }
+        public override int ToFourDigitYear(int year) { return default(int); }
+    }
+    public partial class TaiwanCalendar : System.Globalization.Calendar
+    {
+        public TaiwanCalendar() { }
+        public override int[] Eras { get { return default(int[]); } }
+        public override System.DateTime MaxSupportedDateTime { get { return default(System.DateTime); } }
+        public override System.DateTime MinSupportedDateTime { get { return default(System.DateTime); } }
+        public override int TwoDigitYearMax { get { return default(int); } set { } }
+        public override System.DateTime AddMonths(System.DateTime time, int months) { return default(System.DateTime); }
+        public override System.DateTime AddYears(System.DateTime time, int years) { return default(System.DateTime); }
+        public override int GetDayOfMonth(System.DateTime time) { return default(int); }
+        public override System.DayOfWeek GetDayOfWeek(System.DateTime time) { return default(System.DayOfWeek); }
+        public override int GetDayOfYear(System.DateTime time) { return default(int); }
+        public override int GetDaysInMonth(int year, int month, int era) { return default(int); }
+        public override int GetDaysInYear(int year, int era) { return default(int); }
+        public override int GetEra(System.DateTime time) { return default(int); }
+        public override int GetLeapMonth(int year, int era) { return default(int); }
+        public override int GetMonth(System.DateTime time) { return default(int); }
+        public override int GetMonthsInYear(int year, int era) { return default(int); }
+        public override int GetWeekOfYear(System.DateTime time, System.Globalization.CalendarWeekRule rule, System.DayOfWeek firstDayOfWeek) { return default(int); }
+        public override int GetYear(System.DateTime time) { return default(int); }
+        public override bool IsLeapDay(int year, int month, int day, int era) { return default(bool); }
+        public override bool IsLeapMonth(int year, int month, int era) { return default(bool); }
+        public override bool IsLeapYear(int year, int era) { return default(bool); }
+        public override System.DateTime ToDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int era) { return default(System.DateTime); }
+        public override int ToFourDigitYear(int year) { return default(int); }
+    }
+    public partial class TaiwanLunisolarCalendar : System.Globalization.EastAsianLunisolarCalendar
+    {
+        public TaiwanLunisolarCalendar() { }
+        public override int[] Eras { get { return default(int[]); } }
+        public override System.DateTime MaxSupportedDateTime { get { return default(System.DateTime); } }
+        public override System.DateTime MinSupportedDateTime { get { return default(System.DateTime); } }
+        public override int GetEra(System.DateTime time) { return default(int); }
+    }
+    public partial class ThaiBuddhistCalendar : System.Globalization.Calendar
+    {
+        public ThaiBuddhistCalendar() { }
+        public override int[] Eras { get { return default(int[]); } }
+        public override System.DateTime MaxSupportedDateTime { get { return default(System.DateTime); } }
+        public override System.DateTime MinSupportedDateTime { get { return default(System.DateTime); } }
+        public override int TwoDigitYearMax { get { return default(int); } set { } }
+        public override System.DateTime AddMonths(System.DateTime time, int months) { return default(System.DateTime); }
+        public override System.DateTime AddYears(System.DateTime time, int years) { return default(System.DateTime); }
+        public override int GetDayOfMonth(System.DateTime time) { return default(int); }
+        public override System.DayOfWeek GetDayOfWeek(System.DateTime time) { return default(System.DayOfWeek); }
+        public override int GetDayOfYear(System.DateTime time) { return default(int); }
+        public override int GetDaysInMonth(int year, int month, int era) { return default(int); }
+        public override int GetDaysInYear(int year, int era) { return default(int); }
+        public override int GetEra(System.DateTime time) { return default(int); }
+        public override int GetLeapMonth(int year, int era) { return default(int); }
+        public override int GetMonth(System.DateTime time) { return default(int); }
+        public override int GetMonthsInYear(int year, int era) { return default(int); }
+        public override int GetWeekOfYear(System.DateTime time, System.Globalization.CalendarWeekRule rule, System.DayOfWeek firstDayOfWeek) { return default(int); }
+        public override int GetYear(System.DateTime time) { return default(int); }
+        public override bool IsLeapDay(int year, int month, int day, int era) { return default(bool); }
+        public override bool IsLeapMonth(int year, int month, int era) { return default(bool); }
+        public override bool IsLeapYear(int year, int era) { return default(bool); }
+        public override System.DateTime ToDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int era) { return default(System.DateTime); }
+        public override int ToFourDigitYear(int year) { return default(int); }
+    }
+    public partial class UmAlQuraCalendar : System.Globalization.Calendar
+    {
+        public const int UmAlQuraEra = 1;
+        public UmAlQuraCalendar() { }
+        public override int[] Eras { get { return default(int[]); } }
+        public override System.DateTime MaxSupportedDateTime { get { return default(System.DateTime); } }
+        public override System.DateTime MinSupportedDateTime { get { return default(System.DateTime); } }
+        public override int TwoDigitYearMax { get { return default(int); } set { } }
+        public override System.DateTime AddMonths(System.DateTime time, int months) { return default(System.DateTime); }
+        public override System.DateTime AddYears(System.DateTime time, int years) { return default(System.DateTime); }
+        public override int GetDayOfMonth(System.DateTime time) { return default(int); }
+        public override System.DayOfWeek GetDayOfWeek(System.DateTime time) { return default(System.DayOfWeek); }
+        public override int GetDayOfYear(System.DateTime time) { return default(int); }
+        public override int GetDaysInMonth(int year, int month, int era) { return default(int); }
+        public override int GetDaysInYear(int year, int era) { return default(int); }
+        public override int GetEra(System.DateTime time) { return default(int); }
+        public override int GetLeapMonth(int year, int era) { return default(int); }
+        public override int GetMonth(System.DateTime time) { return default(int); }
+        public override int GetMonthsInYear(int year, int era) { return default(int); }
+        public override int GetYear(System.DateTime time) { return default(int); }
+        public override bool IsLeapDay(int year, int month, int day, int era) { return default(bool); }
+        public override bool IsLeapMonth(int year, int month, int era) { return default(bool); }
+        public override bool IsLeapYear(int year, int era) { return default(bool); }
+        public override System.DateTime ToDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int era) { return default(System.DateTime); }
+        public override int ToFourDigitYear(int year) { return default(int); }
+    }
+    public static partial class CharUnicodeInfo
+    {
+        public static int GetDecimalDigitValue(char ch) { return default(int); }
+        public static int GetDecimalDigitValue(string s, int index) { return default(int); }
+        public static int GetDigitValue(char ch) { return default(int); }
+        public static int GetDigitValue(string s, int index) { return default(int); }
+        public static double GetNumericValue(char ch) { return default(double); }
+        public static double GetNumericValue(string s, int index) { return default(double); }
+        public static System.Globalization.UnicodeCategory GetUnicodeCategory(char ch) { return default(System.Globalization.UnicodeCategory); }
+        public static System.Globalization.UnicodeCategory GetUnicodeCategory(string s, int index) { return default(System.Globalization.UnicodeCategory); }
     }
     [System.FlagsAttribute]
     public enum DateTimeStyles
@@ -2758,6 +3317,367 @@ namespace System.Globalization
         AssumeNegative = 1,
         None = 0,
     }
+    [System.FlagsAttribute]
+    public enum CompareOptions
+    {
+        IgnoreCase = 1,
+        IgnoreKanaType = 8,
+        IgnoreNonSpace = 2,
+        IgnoreSymbols = 4,
+        IgnoreWidth = 16,
+        None = 0,
+        Ordinal = 1073741824,
+        OrdinalIgnoreCase = 268435456,
+        StringSort = 536870912,
+    }
+    public partial class CompareInfo : System.Runtime.Serialization.IDeserializationCallback
+    {
+        internal CompareInfo() { }
+        public int LCID { get { return default(int); } }
+        public virtual string Name { get { return default(string); } }
+        public virtual int Compare(string string1, int offset1, int length1, string string2, int offset2, int length2) { return default(int); }
+        public virtual int Compare(string string1, int offset1, int length1, string string2, int offset2, int length2, System.Globalization.CompareOptions options) { return default(int); }
+        public virtual int Compare(string string1, int offset1, string string2, int offset2) { return default(int); }
+        public virtual int Compare(string string1, int offset1, string string2, int offset2, System.Globalization.CompareOptions options) { return default(int); }
+        public virtual int Compare(string string1, string string2) { return default(int); }
+        public virtual int Compare(string string1, string string2, System.Globalization.CompareOptions options) { return default(int); }
+        public override bool Equals(object value) { return default(bool); }
+        public static System.Globalization.CompareInfo GetCompareInfo(int culture) { return default(System.Globalization.CompareInfo); }
+        public static System.Globalization.CompareInfo GetCompareInfo(string name) { return default(System.Globalization.CompareInfo); }
+        // Temproray disable the API's depends on System.Reflection.Assembly till we get it defined in System.Runtime
+//        public static System.Globalization.CompareInfo GetCompareInfo(int culture, System.Reflection.Assembly assembly) { return default(System.Globalization.CompareInfo); }
+//        public static System.Globalization.CompareInfo GetCompareInfo(string name, System.Reflection.Assembly assembly) { return default(System.Globalization.CompareInfo); }
+        public override int GetHashCode() { return default(int); }
+        public virtual int GetHashCode(string source, System.Globalization.CompareOptions options) { return default(int); }
+        public virtual System.Globalization.SortKey GetSortKey(string source) { return default(System.Globalization.SortKey); }
+        public virtual System.Globalization.SortKey GetSortKey(string source, System.Globalization.CompareOptions options) { return default(System.Globalization.SortKey); }
+        public virtual int IndexOf(string source, char value) { return default(int); }
+        public virtual int IndexOf(string source, char value, System.Globalization.CompareOptions options) { return default(int); }
+        public virtual int IndexOf(string source, char value, int startIndex) { return default(int); }
+        public virtual int IndexOf(string source, char value, int startIndex, System.Globalization.CompareOptions options) { return default(int); }
+        public virtual int IndexOf(string source, char value, int startIndex, int count) { return default(int); }
+        public virtual int IndexOf(string source, char value, int startIndex, int count, System.Globalization.CompareOptions options) { return default(int); }
+        public virtual int IndexOf(string source, string value) { return default(int); }
+        public virtual int IndexOf(string source, string value, System.Globalization.CompareOptions options) { return default(int); }
+        public virtual int IndexOf(string source, string value, int startIndex) { return default(int); }
+        public virtual int IndexOf(string source, string value, int startIndex, System.Globalization.CompareOptions options) { return default(int); }
+        public virtual int IndexOf(string source, string value, int startIndex, int count) { return default(int); }
+        public virtual int IndexOf(string source, string value, int startIndex, int count, System.Globalization.CompareOptions options) { return default(int); }
+        public virtual bool IsPrefix(string source, string prefix) { return default(bool); }
+        public virtual bool IsPrefix(string source, string prefix, System.Globalization.CompareOptions options) { return default(bool); }
+        public static bool IsSortable(char ch) { return default(bool); }
+        public static bool IsSortable(string text) { return default(bool); }
+        public virtual bool IsSuffix(string source, string suffix) { return default(bool); }
+        public virtual bool IsSuffix(string source, string suffix, System.Globalization.CompareOptions options) { return default(bool); }
+        public virtual int LastIndexOf(string source, char value) { return default(int); }
+        public virtual int LastIndexOf(string source, char value, System.Globalization.CompareOptions options) { return default(int); }
+        public virtual int LastIndexOf(string source, char value, int startIndex) { return default(int); }
+        public virtual int LastIndexOf(string source, char value, int startIndex, System.Globalization.CompareOptions options) { return default(int); }
+        public virtual int LastIndexOf(string source, char value, int startIndex, int count) { return default(int); }
+        public virtual int LastIndexOf(string source, char value, int startIndex, int count, System.Globalization.CompareOptions options) { return default(int); }
+        public virtual int LastIndexOf(string source, string value) { return default(int); }
+        public virtual int LastIndexOf(string source, string value, System.Globalization.CompareOptions options) { return default(int); }
+        public virtual int LastIndexOf(string source, string value, int startIndex, System.Globalization.CompareOptions options) { return default(int); }
+        public virtual int LastIndexOf(string source, string value, int startIndex) { return default(int); }
+        public virtual int LastIndexOf(string source, string value, int startIndex, int count) { return default(int); }
+        public virtual int LastIndexOf(string source, string value, int startIndex, int count, System.Globalization.CompareOptions options) { return default(int); }
+        void System.Runtime.Serialization.IDeserializationCallback.OnDeserialization(object sender) { }
+        public override string ToString() { return default(string); }
+    }
+    public sealed partial class DateTimeFormatInfo : System.IFormatProvider
+    {
+        public DateTimeFormatInfo() { }
+        public string[] AbbreviatedDayNames { get { return default(string[]); } set { } }
+        public string[] AbbreviatedMonthGenitiveNames { get { return default(string[]); } set { } }
+        public string[] AbbreviatedMonthNames { get { return default(string[]); } set { } }
+        public string AMDesignator { get { return default(string); } set { } }
+        public System.Globalization.Calendar Calendar { get { return default(System.Globalization.Calendar); } set { } }
+        public System.Globalization.CalendarWeekRule CalendarWeekRule { get { return default(System.Globalization.CalendarWeekRule); } set { } }
+        public static System.Globalization.DateTimeFormatInfo CurrentInfo { get { return default(System.Globalization.DateTimeFormatInfo); } }
+        public string DateSeparator { get { return default(string); } set { } }
+        public string[] DayNames { get { return default(string[]); } set { } }
+        public System.DayOfWeek FirstDayOfWeek { get { return default(System.DayOfWeek); } set { } }
+        public string FullDateTimePattern { get { return default(string); } set { } }
+        public static System.Globalization.DateTimeFormatInfo InvariantInfo { get { return default(System.Globalization.DateTimeFormatInfo); } }
+        public bool IsReadOnly { get { return default(bool); } }
+        public string LongDatePattern { get { return default(string); } set { } }
+        public string LongTimePattern { get { return default(string); } set { } }
+        public string MonthDayPattern { get { return default(string); } set { } }
+        public string[] MonthGenitiveNames { get { return default(string[]); } set { } }
+        public string[] MonthNames { get { return default(string[]); } set { } }
+        public string NativeCalendarName { get { return default(string); } }
+        public string PMDesignator { get { return default(string); } set { } }
+        public string RFC1123Pattern { get { return default(string); } }
+        public string ShortDatePattern { get { return default(string); } set { } }
+        public string[] ShortestDayNames { get { return default(string[]); } set { } }
+        public string ShortTimePattern { get { return default(string); } set { } }
+        public string SortableDateTimePattern { get { return default(string); } }
+        public string TimeSeparator { get { return default(string); } set { } }
+        public string UniversalSortableDateTimePattern { get { return default(string); } }
+        public string YearMonthPattern { get { return default(string); } set { } }
+        public object Clone() { return default(object); }
+        public string GetAbbreviatedDayName(System.DayOfWeek dayofweek) { return default(string); }
+        public string GetAbbreviatedEraName(int era) { return default(string); }
+        public string GetAbbreviatedMonthName(int month) { return default(string); }
+        public string[] GetAllDateTimePatterns() { return default(string[]); }
+        public string[] GetAllDateTimePatterns(char format) { return default(string[]); }
+        public string GetDayName(System.DayOfWeek dayofweek) { return default(string); }
+        public int GetEra(string eraName) { return default(int); }
+        public string GetEraName(int era) { return default(string); }
+        public object GetFormat(System.Type formatType) { return default(object); }
+        public static System.Globalization.DateTimeFormatInfo GetInstance(System.IFormatProvider provider) { return default(System.Globalization.DateTimeFormatInfo); }
+        public string GetMonthName(int month) { return default(string); }
+        public string GetShortestDayName(System.DayOfWeek dayOfWeek) { return default(string); }
+        public static System.Globalization.DateTimeFormatInfo ReadOnly(System.Globalization.DateTimeFormatInfo dtfi) { return default(System.Globalization.DateTimeFormatInfo); }
+        public void SetAllDateTimePatterns(string[] patterns, char format) { }
+    }
+    public partial class DaylightTime
+    {
+        public DaylightTime(System.DateTime start, System.DateTime end, System.TimeSpan delta) { }
+        public System.TimeSpan Delta { get { return default(System.TimeSpan); } }
+        public System.DateTime End { get { return default(System.DateTime); } }
+        public System.DateTime Start { get { return default(System.DateTime); } }
+    }
+    public enum DigitShapes
+    {
+        Context = 0,
+        NativeNational = 2,
+        None = 1,
+    }
+    public sealed partial class NumberFormatInfo : System.IFormatProvider
+    {
+        public NumberFormatInfo() { }
+        public int CurrencyDecimalDigits { get { return default(int); } set { } }
+        public string CurrencyDecimalSeparator { get { return default(string); } set { } }
+        public string CurrencyGroupSeparator { get { return default(string); } set { } }
+        public int[] CurrencyGroupSizes { get { return default(int[]); } set { } }
+        public int CurrencyNegativePattern { get { return default(int); } set { } }
+        public int CurrencyPositivePattern { get { return default(int); } set { } }
+        public string CurrencySymbol { get { return default(string); } set { } }
+        public static System.Globalization.NumberFormatInfo CurrentInfo { get { return default(System.Globalization.NumberFormatInfo); } }
+        public System.Globalization.DigitShapes DigitSubstitution { get { return default(System.Globalization.DigitShapes); } set { } }
+        public static System.Globalization.NumberFormatInfo InvariantInfo { get { return default(System.Globalization.NumberFormatInfo); } }
+        public bool IsReadOnly { get { return default(bool); } }
+        public string NaNSymbol { get { return default(string); } set { } }
+        public string[] NativeDigits { get { return default(string[]); } set { } }
+        public string NegativeInfinitySymbol { get { return default(string); } set { } }
+        public string NegativeSign { get { return default(string); } set { } }
+        public int NumberDecimalDigits { get { return default(int); } set { } }
+        public string NumberDecimalSeparator { get { return default(string); } set { } }
+        public string NumberGroupSeparator { get { return default(string); } set { } }
+        public int[] NumberGroupSizes { get { return default(int[]); } set { } }
+        public int NumberNegativePattern { get { return default(int); } set { } }
+        public int PercentDecimalDigits { get { return default(int); } set { } }
+        public string PercentDecimalSeparator { get { return default(string); } set { } }
+        public string PercentGroupSeparator { get { return default(string); } set { } }
+        public int[] PercentGroupSizes { get { return default(int[]); } set { } }
+        public int PercentNegativePattern { get { return default(int); } set { } }
+        public int PercentPositivePattern { get { return default(int); } set { } }
+        public string PercentSymbol { get { return default(string); } set { } }
+        public string PerMilleSymbol { get { return default(string); } set { } }
+        public string PositiveInfinitySymbol { get { return default(string); } set { } }
+        public string PositiveSign { get { return default(string); } set { } }
+        public object Clone() { return default(object); }
+        public object GetFormat(System.Type formatType) { return default(object); }
+        public static System.Globalization.NumberFormatInfo GetInstance(System.IFormatProvider formatProvider) { return default(System.Globalization.NumberFormatInfo); }
+        public static System.Globalization.NumberFormatInfo ReadOnly(System.Globalization.NumberFormatInfo nfi) { return default(System.Globalization.NumberFormatInfo); }
+    }
+    public partial class TextInfo : System.ICloneable, System.Runtime.Serialization.IDeserializationCallback
+    {
+        internal TextInfo() { }
+        public virtual int ANSICodePage { get { return default(int); } }
+        public string CultureName { get { return default(string); } }
+        public virtual int EBCDICCodePage { get { return default(int); } }
+        public bool IsReadOnly { get { return default(bool); } }
+        public bool IsRightToLeft { get { return default(bool); } }
+        public int LCID { get { return default(int); } }
+        public virtual string ListSeparator { get { return default(string); } set { } }
+        public virtual int MacCodePage { get { return default(int); } }
+        public virtual int OEMCodePage { get { return default(int); } }
+        public virtual object Clone() { return default(object); }
+        public override bool Equals(object obj) { return default(bool); }
+        public override int GetHashCode() { return default(int); }
+        public static System.Globalization.TextInfo ReadOnly(System.Globalization.TextInfo textInfo) { return default(System.Globalization.TextInfo); }
+        void System.Runtime.Serialization.IDeserializationCallback.OnDeserialization(object sender) { }
+        public virtual char ToLower(char c) { return default(char); }
+        public virtual string ToLower(string str) { return default(string); }
+        public override string ToString() { return default(string); }
+        public string ToTitleCase(string str) { return default(string); }
+        public virtual char ToUpper(char c) { return default(char); }
+        public virtual string ToUpper(string str) { return default(string); }
+    }
+    public partial class CultureInfo : System.IFormatProvider
+    {
+        public CultureInfo(int culture) { }
+        public CultureInfo(int culture, bool useUserOverride) { }
+        public CultureInfo(string name) { }
+        public CultureInfo(string name, bool useUserOverride) { }
+        public virtual System.Globalization.Calendar Calendar { get { return default(System.Globalization.Calendar); } }
+        public virtual System.Globalization.CompareInfo CompareInfo { get { return default(System.Globalization.CompareInfo); } }
+        public static System.Globalization.CultureInfo CurrentCulture { get { return default(System.Globalization.CultureInfo); } set { } }
+        public static System.Globalization.CultureInfo CurrentUICulture { get { return default(System.Globalization.CultureInfo); } set { } }
+        public virtual System.Globalization.DateTimeFormatInfo DateTimeFormat { get { return default(System.Globalization.DateTimeFormatInfo); } set { } }
+        public static System.Globalization.CultureInfo DefaultThreadCurrentCulture { get { return default(System.Globalization.CultureInfo); } set { } }
+        public static System.Globalization.CultureInfo DefaultThreadCurrentUICulture { get { return default(System.Globalization.CultureInfo); } set { } }
+        public virtual string DisplayName { get { return default(string); } }
+        public virtual string EnglishName { get { return default(string); } }
+        public static System.Globalization.CultureInfo InstalledUICulture { get { return default(System.Globalization.CultureInfo); } }
+        public static System.Globalization.CultureInfo InvariantCulture { get { return default(System.Globalization.CultureInfo); } }
+        public virtual bool IsNeutralCulture { get { return default(bool); } }
+        public bool IsReadOnly { get { return default(bool); } }
+        public virtual int LCID { get { return default(int); } }
+        public virtual string Name { get { return default(string); } }
+        public virtual string NativeName { get { return default(string); } }
+        public virtual System.Globalization.NumberFormatInfo NumberFormat { get { return default(System.Globalization.NumberFormatInfo); } set { } }
+        public virtual System.Globalization.Calendar[] OptionalCalendars { get { return default(System.Globalization.Calendar[]); } }
+        public virtual System.Globalization.CultureInfo Parent { get { return default(System.Globalization.CultureInfo); } }
+        public virtual System.Globalization.TextInfo TextInfo { get { return default(System.Globalization.TextInfo); } }
+        public virtual string ThreeLetterISOLanguageName { get { return default(string); } }
+        public virtual string ThreeLetterWindowsLanguageName { get { return default(string); } }
+        public virtual string TwoLetterISOLanguageName { get { return default(string); } }
+        public bool UseUserOverride { get { throw null; } }
+        public virtual object Clone() { return default(object); }
+        public static System.Globalization.CultureInfo CreateSpecificCulture(string name) { return default(System.Globalization.CultureInfo); }
+        public override bool Equals(object value) { return default(bool); }
+        public static System.Globalization.CultureInfo GetCultureInfo(int culture) { return default(System.Globalization.CultureInfo); }
+        public static System.Globalization.CultureInfo GetCultureInfo(string name) { return default(System.Globalization.CultureInfo); }
+        public static System.Globalization.CultureInfo GetCultureInfo(string name, string altName) { return default(System.Globalization.CultureInfo); }
+        public static System.Globalization.CultureInfo GetCultureInfoByIetfLanguageTag(string name) { return default(System.Globalization.CultureInfo); }
+        public static System.Globalization.CultureInfo[] GetCultures(System.Globalization.CultureTypes types) { return default(System.Globalization.CultureInfo[]); }
+        public virtual object GetFormat(System.Type formatType) { return default(object); }
+        public override int GetHashCode() { return default(int); }
+        public static System.Globalization.CultureInfo ReadOnly(System.Globalization.CultureInfo ci) { return default(System.Globalization.CultureInfo); }
+        public override string ToString() { return default(string); }
+    }
+    public partial class CultureNotFoundException : System.ArgumentException, System.Runtime.Serialization.ISerializable
+    {
+        public CultureNotFoundException() { }
+        public CultureNotFoundException(string message) { }
+        public CultureNotFoundException(string message, System.Exception innerException) { }
+        public CultureNotFoundException(string message, int invalidCultureId, System.Exception innerException) { }
+        public CultureNotFoundException(string paramName, int invalidCultureId, string message) { }
+        public CultureNotFoundException(string paramName, string message) { }
+        public CultureNotFoundException(string message, string invalidCultureName, System.Exception innerException) { }
+        public CultureNotFoundException(string paramName, string invalidCultureName, string message) { }
+        protected CultureNotFoundException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+        public virtual System.Nullable<int> InvalidCultureId { get { return default(System.Nullable<int>); } }
+        public virtual string InvalidCultureName { get { return default(string); } }
+        public override string Message { get { return default(string); } }
+        public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
+    }
+    [System.FlagsAttribute]
+    public enum CultureTypes
+    {
+        AllCultures = 7,
+        FrameworkCultures = 64,
+        InstalledWin32Cultures = 4,
+        NeutralCultures = 1,
+        ReplacementCultures = 16,
+        SpecificCultures = 2,
+        UserCustomCulture = 8,
+        WindowsOnlyCultures = 32,
+    }
+    public enum UnicodeCategory
+    {
+        ClosePunctuation = 21,
+        ConnectorPunctuation = 18,
+        Control = 14,
+        CurrencySymbol = 26,
+        DashPunctuation = 19,
+        DecimalDigitNumber = 8,
+        EnclosingMark = 7,
+        FinalQuotePunctuation = 23,
+        Format = 15,
+        InitialQuotePunctuation = 22,
+        LetterNumber = 9,
+        LineSeparator = 12,
+        LowercaseLetter = 1,
+        MathSymbol = 25,
+        ModifierLetter = 3,
+        ModifierSymbol = 27,
+        NonSpacingMark = 5,
+        OpenPunctuation = 20,
+        OtherLetter = 4,
+        OtherNotAssigned = 29,
+        OtherNumber = 10,
+        OtherPunctuation = 24,
+        OtherSymbol = 28,
+        ParagraphSeparator = 13,
+        PrivateUse = 17,
+        SpaceSeparator = 11,
+        SpacingCombiningMark = 6,
+        Surrogate = 16,
+        TitlecaseLetter = 2,
+        UppercaseLetter = 0,
+    }
+    public partial class RegionInfo
+    {
+        public RegionInfo(int culture) { }
+        public RegionInfo(string name) { }
+        public virtual string CurrencyEnglishName { get { return default(string); } }
+        public virtual string CurrencyNativeName { get { return default(string); } }
+        public virtual string CurrencySymbol { get { return default(string); } }
+        public static System.Globalization.RegionInfo CurrentRegion { get { return default(System.Globalization.RegionInfo); } }
+        public virtual string DisplayName { get { return default(string); } }
+        public virtual string EnglishName { get { return default(string); } }
+        public virtual int GeoId { get { return default(int); } }
+        public virtual bool IsMetric { get { return default(bool); } }
+        public virtual string ISOCurrencySymbol { get { return default(string); } }
+        public virtual string Name { get { return default(string); } }
+        public virtual string NativeName { get { return default(string); } }
+        public virtual string ThreeLetterISORegionName { get { return default(string); } }
+        public virtual string ThreeLetterWindowsRegionName { get { return default(string); } }
+        public virtual string TwoLetterISORegionName { get { return default(string); } }
+        public override bool Equals(object value) { return default(bool); }
+        public override int GetHashCode() { return default(int); }
+        public override string ToString() { return default(string); }
+    }
+    public partial class SortKey
+    {
+        internal SortKey() { }
+        public virtual byte[] KeyData { get { return default(byte[]); } }
+        public virtual string OriginalString { get { return default(string); } }
+        public static int Compare(System.Globalization.SortKey sortkey1, System.Globalization.SortKey sortkey2) { return default(int); }
+        public override bool Equals(object value) { return default(bool); }
+        public override int GetHashCode() { return default(int); }
+        public override string ToString() { return default(string); }
+    }
+    public sealed partial class SortVersion : System.IEquatable<System.Globalization.SortVersion>
+    {
+        public SortVersion(int fullVersion, System.Guid sortId) { }
+        public int FullVersion { get { return default(int); } }
+        public System.Guid SortId { get { return default(System.Guid); } }
+        public bool Equals(System.Globalization.SortVersion other) { return default(bool); }
+        public override bool Equals(object obj) { return default(bool); }
+        public override int GetHashCode() { return default(int); }
+        public static bool operator ==(System.Globalization.SortVersion left, System.Globalization.SortVersion right) { return default(bool); }
+        public static bool operator !=(System.Globalization.SortVersion left, System.Globalization.SortVersion right) { return default(bool); }
+    }
+    public partial class StringInfo
+    {
+        public StringInfo() { }
+        public StringInfo(string value) { }
+        public int LengthInTextElements { get { return default(int); } }
+        public string String { get { return default(string); } set { } }
+        public override bool Equals(object value) { return default(bool); }
+        public override int GetHashCode() { return default(int); }
+        public static string GetNextTextElement(string str) { return default(string); }
+        public static string GetNextTextElement(string str, int index) { return default(string); }
+        public static System.Globalization.TextElementEnumerator GetTextElementEnumerator(string str) { return default(System.Globalization.TextElementEnumerator); }
+        public static System.Globalization.TextElementEnumerator GetTextElementEnumerator(string str, int index) { return default(System.Globalization.TextElementEnumerator); }
+        public static int[] ParseCombiningCharacters(string str) { return default(int[]); }
+        public string SubstringByTextElements(int startingTextElement) { return default(string); }
+        public string SubstringByTextElements(int startingTextElement, int lengthInTextElements) { return default(string); }
+    }
+    public partial class TextElementEnumerator : System.Collections.IEnumerator
+    {
+        internal TextElementEnumerator() { }
+        public object Current { get { return default(object); } }
+        public int ElementIndex { get { return default(int); } }
+        public string GetTextElement() { return default(string); }
+        public bool MoveNext() { return default(bool); }
+        public void Reset() { }
+    }
 }
 namespace System.IO
 {
@@ -2766,6 +3686,7 @@ namespace System.IO
         public DirectoryNotFoundException() { }
         public DirectoryNotFoundException(string message) { }
         public DirectoryNotFoundException(string message, System.Exception innerException) { }
+        protected DirectoryNotFoundException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
     public partial class FileLoadException : System.IO.IOException
     {
@@ -2774,6 +3695,7 @@ namespace System.IO
         public FileLoadException(string message, System.Exception inner) { }
         public FileLoadException(string message, string fileName) { }
         public FileLoadException(string message, string fileName, System.Exception inner) { }
+        protected FileLoadException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
         public string FileName { get { return default(string); } }
         public override string Message { get { return default(string); } }
         public override string ToString() { return default(string); }
@@ -2785,6 +3707,7 @@ namespace System.IO
         public FileNotFoundException(string message, System.Exception innerException) { }
         public FileNotFoundException(string message, string fileName) { }
         public FileNotFoundException(string message, string fileName, System.Exception innerException) { }
+        protected FileNotFoundException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
         public string FileName { get { return default(string); } }
         public override string Message { get { return default(string); } }
         public override string ToString() { return default(string); }
@@ -2795,12 +3718,14 @@ namespace System.IO
         public IOException(string message) { }
         public IOException(string message, System.Exception innerException) { }
         public IOException(string message, int hresult) { }
+        protected IOException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
     public partial class PathTooLongException : System.IO.IOException
     {
         public PathTooLongException() { }
         public PathTooLongException(string message) { }
         public PathTooLongException(string message, System.Exception innerException) { }
+        protected PathTooLongException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
 }
 namespace System.Reflection
@@ -3125,6 +4050,11 @@ namespace System.Runtime.CompilerServices
         public StrongBox(T value) { }
         object System.Runtime.CompilerServices.IStrongBox.Value { get { return default(object); } set { } }
     }
+    [System.AttributeUsage((System.AttributeTargets)(1) | (System.AttributeTargets)(2))]
+    public sealed partial class SuppressIldasmAttribute : System.Attribute
+    {
+        public SuppressIldasmAttribute() { }
+    }
     [System.AttributeUsageAttribute((System.AttributeTargets)(5148), Inherited = false, AllowMultiple = false)]
     public sealed partial class TypeForwardedFromAttribute : System.Attribute
     {
@@ -3193,6 +4123,173 @@ namespace System.Runtime.InteropServices
         public System.Runtime.InteropServices.LayoutKind Value { get { return default(System.Runtime.InteropServices.LayoutKind); } }
     }
 }
+namespace System.Runtime.Serialization
+{
+    public interface IDeserializationCallback
+    {
+        void OnDeserialization(object sender);
+    }
+    [CLSCompliant(false)]
+    public interface IFormatterConverter
+    {
+        object Convert(object value, Type type);
+        object Convert(object value, TypeCode typeCode);
+        bool ToBoolean(object value);
+        char ToChar(object value);
+        [CLSCompliant(false)]
+        sbyte ToSByte(object value);
+        byte ToByte(object value);
+        short ToInt16(object value);
+        [CLSCompliant(false)]
+        ushort ToUInt16(object value);
+        int ToInt32(object value);
+        [CLSCompliant(false)]
+        uint ToUInt32(object value);
+        long ToInt64(object value);
+        [CLSCompliant(false)]
+        ulong ToUInt64(object value);
+        float ToSingle(object value);
+        double ToDouble(object value);
+        Decimal ToDecimal(object value);
+        DateTime ToDateTime(object value);
+        String ToString(object value);
+    }
+    public interface IObjectReference
+    {
+        object GetRealObject(StreamingContext context);
+    }
+    public interface ISerializable
+    {
+        void GetObjectData(SerializationInfo info, StreamingContext context);
+    }
+    [System.AttributeUsageAttribute((System.AttributeTargets)(64), Inherited = false)]
+    public sealed partial class OnDeserializedAttribute : System.Attribute
+    {
+        public OnDeserializedAttribute() { }
+    }
+    [System.AttributeUsageAttribute((System.AttributeTargets)(64), Inherited = false)]
+    public sealed partial class OnDeserializingAttribute : System.Attribute
+    {
+        public OnDeserializingAttribute() { }
+    }
+    [System.AttributeUsageAttribute((System.AttributeTargets)(64), Inherited = false)]
+    public sealed partial class OnSerializedAttribute : System.Attribute
+    {
+        public OnSerializedAttribute() { }
+    }
+    [System.AttributeUsageAttribute((System.AttributeTargets)(64), Inherited = false)]
+    public sealed partial class OnSerializingAttribute : System.Attribute
+    {
+        public OnSerializingAttribute() { }
+    }
+    [System.AttributeUsageAttribute(System.AttributeTargets.Field, Inherited = false)]
+    public sealed partial class OptionalFieldAttribute : System.Attribute
+    {
+        public OptionalFieldAttribute() { }
+        public int VersionAdded { get { return default(int); } set { } }
+    }
+    [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential)]
+    public struct SerializationEntry
+    {
+        public string Name { get { throw null; } }
+        public Type ObjectType { get { throw null; } }
+        public object Value { get { throw null; } }
+    }
+    public partial class SerializationException : System.Exception
+    {
+        public SerializationException() { }
+        public SerializationException(string message) { }
+        public SerializationException(string message, System.Exception innerException) { }
+        protected SerializationException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+    }
+    public sealed class SerializationInfo
+    {
+        [CLSCompliant(false)]
+        public SerializationInfo(Type type, IFormatterConverter converter) { }
+        public string AssemblyName { get { throw null; } set { } }
+        public string FullTypeName { get { throw null; } set { } }
+        public int MemberCount { get { throw null; } }
+        public Type ObjectType { get { throw null; } }
+        public bool IsFullTypeNameSetExplicit { get { throw null; } }
+        public bool IsAssemblyNameSetExplicit { get { throw null; } }
+        public void AddValue(string name, bool value) { }
+        public void AddValue(string name, byte value) { }
+        public void AddValue(string name, char value) { }
+        public void AddValue(string name, DateTime value) { }
+        public void AddValue(string name, decimal value) { }
+        public void AddValue(string name, double value) { }
+        public void AddValue(string name, short value) { }
+        public void AddValue(string name, int value) { }
+        public void AddValue(string name, long value) { }
+        public void AddValue(string name, object value) { }
+        public void AddValue(string name, object value, Type type) { }
+        [CLSCompliant(false)]
+        public void AddValue(string name, sbyte value) { }
+        public void AddValue(string name, float value) { }
+        [CLSCompliant(false)]
+        public void AddValue(string name, ushort value) { }
+        [CLSCompliant(false)]
+        public void AddValue(string name, uint value) { }
+        [CLSCompliant(false)]
+        public void AddValue(string name, ulong value) { }
+        public bool GetBoolean(string name) { throw null; }
+        public byte GetByte(string name) { throw null; }
+        public char GetChar(string name) { throw null; }
+        public DateTime GetDateTime(string name) { throw null; }
+        public decimal GetDecimal(string name) { throw null; }
+        public double GetDouble(string name) { throw null; }
+        public SerializationInfoEnumerator GetEnumerator() { throw null; }
+        public short GetInt16(string name) { throw null; }
+        public int GetInt32(string name) { throw null; }
+        public long GetInt64(string name) { throw null; }
+        [CLSCompliant(false)]
+        public sbyte GetSByte(string name) { throw null; }
+        public float GetSingle(string name) { throw null; }
+        public string GetString(string name) { throw null; }
+        [CLSCompliant(false)]
+        public ushort GetUInt16(string name) { throw null; }
+        [CLSCompliant(false)]
+        public uint GetUInt32(string name) { throw null; }
+        [CLSCompliant(false)]
+        public ulong GetUInt64(string name) { throw null; }
+        public object GetValue(string name, Type type) { throw null; }
+        public void SetType(Type type) { }
+    }
+    public sealed class SerializationInfoEnumerator : System.Collections.IEnumerator
+    {
+        private SerializationInfoEnumerator() { }
+        public SerializationEntry Current { get { throw null; } }
+        public string Name { get { throw null; } }
+        public Type ObjectType { get { throw null; } }
+        object System.Collections.IEnumerator.Current { get { throw null; } }
+        public object Value { get { throw null; } }
+        public bool MoveNext() { throw null; }
+        public void Reset() { throw null; }
+    }
+    [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential)]
+    public partial struct StreamingContext
+    {
+        public StreamingContext(System.Runtime.Serialization.StreamingContextStates state) { }
+        public StreamingContext(System.Runtime.Serialization.StreamingContextStates state, object additional) { }
+        public override bool Equals(object obj) { return default(bool); }
+        public override int GetHashCode() { return default(int); }
+        public System.Runtime.Serialization.StreamingContextStates State { get { return default(System.Runtime.Serialization.StreamingContextStates); } }
+        public object Context { get { return default(object); } }
+    }
+    [Flags]
+    public enum StreamingContextStates
+    {
+        CrossProcess = 0x01,
+        CrossMachine = 0x02,
+        File = 0x04,
+        Persistence = 0x08,
+        Remoting = 0x10,
+        Other = 0x20,
+        Clone = 0x40,
+        CrossAppDomain = 0x80,
+        All = 0xFF,
+    }
+}
 namespace System.Runtime.Versioning
 {
     [System.AttributeUsageAttribute((System.AttributeTargets)(1), AllowMultiple = false, Inherited = false)]
@@ -3220,6 +4317,8 @@ namespace System.Security
         public SecurityException() { }
         public SecurityException(string message) { }
         public SecurityException(string message, System.Exception inner) { }
+        protected SecurityException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+        public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) { }
         public override string ToString() { return default(string); }
     }
     [System.AttributeUsageAttribute((System.AttributeTargets)(5500), AllowMultiple = false, Inherited = false)]
@@ -3237,6 +4336,7 @@ namespace System.Security
         public VerificationException() { }
         public VerificationException(string message) { }
         public VerificationException(string message, System.Exception innerException) { }
+        protected VerificationException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
 }
 namespace System.Text
@@ -3323,6 +4423,191 @@ namespace System.Text
         public System.Text.StringBuilder Replace(string oldValue, string newValue, int startIndex, int count) { return default(System.Text.StringBuilder); }
         public override string ToString() { return default(string); }
         public string ToString(int startIndex, int length) { return default(string); }
+    }
+    public abstract partial class Decoder
+    {
+        protected Decoder() { }
+        public System.Text.DecoderFallback Fallback { get { return default(System.Text.DecoderFallback); } set { } }
+        public System.Text.DecoderFallbackBuffer FallbackBuffer { get { return default(System.Text.DecoderFallbackBuffer); } }
+        public virtual void Convert(byte[] bytes, int byteIndex, int byteCount, char[] chars, int charIndex, int charCount, bool flush, out int bytesUsed, out int charsUsed, out bool completed) { bytesUsed = default(int); charsUsed = default(int); completed = default(bool); }
+        public abstract int GetCharCount(byte[] bytes, int index, int count);
+        public virtual int GetCharCount(byte[] bytes, int index, int count, bool flush) { return default(int); }
+        public abstract int GetChars(byte[] bytes, int byteIndex, int byteCount, char[] chars, int charIndex);
+        public virtual int GetChars(byte[] bytes, int byteIndex, int byteCount, char[] chars, int charIndex, bool flush) { return default(int); }
+        public virtual void Reset() { }
+    }
+    public sealed partial class DecoderExceptionFallback : System.Text.DecoderFallback
+    {
+        public DecoderExceptionFallback() { }
+        public override int MaxCharCount { get { return default(int); } }
+        public override System.Text.DecoderFallbackBuffer CreateFallbackBuffer() { return default(System.Text.DecoderFallbackBuffer); }
+        public override bool Equals(object value) { return default(bool); }
+        public override int GetHashCode() { return default(int); }
+    }
+    public abstract partial class DecoderFallback
+    {
+        protected DecoderFallback() { }
+        public static System.Text.DecoderFallback ExceptionFallback { get { return default(System.Text.DecoderFallback); } }
+        public abstract int MaxCharCount { get; }
+        public static System.Text.DecoderFallback ReplacementFallback { get { return default(System.Text.DecoderFallback); } }
+        public abstract System.Text.DecoderFallbackBuffer CreateFallbackBuffer();
+    }
+    public abstract partial class DecoderFallbackBuffer
+    {
+        protected DecoderFallbackBuffer() { }
+        public abstract int Remaining { get; }
+        public abstract bool Fallback(byte[] bytesUnknown, int index);
+        public abstract char GetNextChar();
+        public abstract bool MovePrevious();
+        public virtual void Reset() { }
+    }
+    public sealed partial class DecoderFallbackException : System.ArgumentException
+    {
+        public DecoderFallbackException() { }
+        public DecoderFallbackException(string message) { }
+        public DecoderFallbackException(string message, byte[] bytesUnknown, int index) { }
+        public DecoderFallbackException(string message, System.Exception innerException) { }
+        public byte[] BytesUnknown { get { return default(byte[]); } }
+        public int Index { get { return default(int); } }
+    }
+    public sealed partial class DecoderReplacementFallback : System.Text.DecoderFallback
+    {
+        public DecoderReplacementFallback() { }
+        public DecoderReplacementFallback(string replacement) { }
+        public string DefaultString { get { return default(string); } }
+        public override int MaxCharCount { get { return default(int); } }
+        public override System.Text.DecoderFallbackBuffer CreateFallbackBuffer() { return default(System.Text.DecoderFallbackBuffer); }
+        public override bool Equals(object value) { return default(bool); }
+        public override int GetHashCode() { return default(int); }
+    }
+    public abstract partial class Encoder
+    {
+        protected Encoder() { }
+        public System.Text.EncoderFallback Fallback { get { return default(System.Text.EncoderFallback); } set { } }
+        public System.Text.EncoderFallbackBuffer FallbackBuffer { get { return default(System.Text.EncoderFallbackBuffer); } }
+        public virtual void Convert(char[] chars, int charIndex, int charCount, byte[] bytes, int byteIndex, int byteCount, bool flush, out int charsUsed, out int bytesUsed, out bool completed) { charsUsed = default(int); bytesUsed = default(int); completed = default(bool); }
+        public abstract int GetByteCount(char[] chars, int index, int count, bool flush);
+        public abstract int GetBytes(char[] chars, int charIndex, int charCount, byte[] bytes, int byteIndex, bool flush);
+        public virtual void Reset() { }
+    }
+    public sealed partial class EncoderExceptionFallback : System.Text.EncoderFallback
+    {
+        public EncoderExceptionFallback() { }
+        public override int MaxCharCount { get { return default(int); } }
+        public override System.Text.EncoderFallbackBuffer CreateFallbackBuffer() { return default(System.Text.EncoderFallbackBuffer); }
+        public override bool Equals(object value) { return default(bool); }
+        public override int GetHashCode() { return default(int); }
+    }
+    public abstract partial class EncoderFallback
+    {
+        protected EncoderFallback() { }
+        public static System.Text.EncoderFallback ExceptionFallback { get { return default(System.Text.EncoderFallback); } }
+        public abstract int MaxCharCount { get; }
+        public static System.Text.EncoderFallback ReplacementFallback { get { return default(System.Text.EncoderFallback); } }
+        public abstract System.Text.EncoderFallbackBuffer CreateFallbackBuffer();
+    }
+    public abstract partial class EncoderFallbackBuffer
+    {
+        protected EncoderFallbackBuffer() { }
+        public abstract int Remaining { get; }
+        public abstract bool Fallback(char charUnknownHigh, char charUnknownLow, int index);
+        public abstract bool Fallback(char charUnknown, int index);
+        public abstract char GetNextChar();
+        public abstract bool MovePrevious();
+        public virtual void Reset() { }
+    }
+    public sealed partial class EncoderFallbackException : System.ArgumentException
+    {
+        public EncoderFallbackException() { }
+        public EncoderFallbackException(string message) { }
+        public EncoderFallbackException(string message, System.Exception innerException) { }
+        public char CharUnknown { get { return default(char); } }
+        public char CharUnknownHigh { get { return default(char); } }
+        public char CharUnknownLow { get { return default(char); } }
+        public int Index { get { return default(int); } }
+        public bool IsUnknownSurrogate() { return default(bool); }
+    }
+    public sealed partial class EncoderReplacementFallback : System.Text.EncoderFallback
+    {
+        public EncoderReplacementFallback() { }
+        public EncoderReplacementFallback(string replacement) { }
+        public string DefaultString { get { return default(string); } }
+        public override int MaxCharCount { get { return default(int); } }
+        public override System.Text.EncoderFallbackBuffer CreateFallbackBuffer() { return default(System.Text.EncoderFallbackBuffer); }
+        public override bool Equals(object value) { return default(bool); }
+        public override int GetHashCode() { return default(int); }
+    }
+    public abstract partial class Encoding
+    {
+        protected Encoding() { }
+        protected Encoding(int codePage) { }
+        protected Encoding(int codePage, System.Text.EncoderFallback encoderFallback, System.Text.DecoderFallback decoderFallback) { }
+        public static System.Text.Encoding ASCII { get { return default(System.Text.Encoding); } }
+        public static System.Text.Encoding BigEndianUnicode { get { return default(System.Text.Encoding); } }
+        public virtual int CodePage { get { return default(int); } }
+        public System.Text.DecoderFallback DecoderFallback { get { return default(System.Text.DecoderFallback); } }
+        public System.Text.EncoderFallback EncoderFallback { get { return default(System.Text.EncoderFallback); } }
+        public virtual string EncodingName { get { return default(string); } }
+        public virtual bool IsSingleByte { get { return default(bool); } }
+        public static System.Text.Encoding Unicode { get { return default(System.Text.Encoding); } }
+        public static System.Text.Encoding UTF32 { get { return default(System.Text.Encoding); } }
+        public static System.Text.Encoding UTF7 { get { return default(System.Text.Encoding); } }
+        public static System.Text.Encoding UTF8 { get { return default(System.Text.Encoding); } }
+        public virtual string WebName { get { return default(string); } }
+        public virtual object Clone() { return default(object); }
+        public static byte[] Convert(System.Text.Encoding srcEncoding, System.Text.Encoding dstEncoding, byte[] bytes) { return default(byte[]); }
+        public static byte[] Convert(System.Text.Encoding srcEncoding, System.Text.Encoding dstEncoding, byte[] bytes, int index, int count) { return default(byte[]); }
+        public override bool Equals(object value) { return default(bool); }
+        [System.CLSCompliantAttribute(false)]
+        [System.Security.SecurityCriticalAttribute]
+        public unsafe virtual int GetByteCount(char* chars, int count) { return default(int); }
+        public virtual int GetByteCount(char[] chars) { return default(int); }
+        public abstract int GetByteCount(char[] chars, int index, int count);
+        public virtual int GetByteCount(string s) { return default(int); }
+        [System.CLSCompliantAttribute(false)]
+        [System.Security.SecurityCriticalAttribute]
+        public unsafe virtual int GetBytes(char* chars, int charCount, byte* bytes, int byteCount) { return default(int); }
+        public virtual byte[] GetBytes(char[] chars) { return default(byte[]); }
+        public virtual byte[] GetBytes(char[] chars, int index, int count) { return default(byte[]); }
+        public abstract int GetBytes(char[] chars, int charIndex, int charCount, byte[] bytes, int byteIndex);
+        public virtual byte[] GetBytes(string s) { return default(byte[]); }
+        public virtual int GetBytes(string s, int charIndex, int charCount, byte[] bytes, int byteIndex) { return default(int); }
+        [System.CLSCompliantAttribute(false)]
+        [System.Security.SecurityCriticalAttribute]
+        public unsafe virtual int GetCharCount(byte* bytes, int count) { return default(int); }
+        public virtual int GetCharCount(byte[] bytes) { return default(int); }
+        public abstract int GetCharCount(byte[] bytes, int index, int count);
+        [System.CLSCompliantAttribute(false)]
+        [System.Security.SecurityCriticalAttribute]
+        public unsafe virtual int GetChars(byte* bytes, int byteCount, char* chars, int charCount) { return default(int); }
+        public virtual char[] GetChars(byte[] bytes) { return default(char[]); }
+        public virtual char[] GetChars(byte[] bytes, int index, int count) { return default(char[]); }
+        public abstract int GetChars(byte[] bytes, int byteIndex, int byteCount, char[] chars, int charIndex);
+        public virtual System.Text.Decoder GetDecoder() { return default(System.Text.Decoder); }
+        public virtual System.Text.Encoder GetEncoder() { return default(System.Text.Encoder); }
+        public static System.Text.Encoding GetEncoding(int codepage) { return default(System.Text.Encoding); }
+        public static System.Text.Encoding GetEncoding(int codepage, System.Text.EncoderFallback encoderFallback, System.Text.DecoderFallback decoderFallback) { return default(System.Text.Encoding); }
+        public static System.Text.Encoding GetEncoding(string name) { return default(System.Text.Encoding); }
+        public static System.Text.Encoding GetEncoding(string name, System.Text.EncoderFallback encoderFallback, System.Text.DecoderFallback decoderFallback) { return default(System.Text.Encoding); }
+        public override int GetHashCode() { return default(int); }
+        public abstract int GetMaxByteCount(int charCount);
+        public abstract int GetMaxCharCount(int byteCount);
+        public virtual byte[] GetPreamble() { return default(byte[]); }
+        [System.CLSCompliantAttribute(false)]
+        [System.Security.SecurityCriticalAttribute]
+        public unsafe string GetString(byte* bytes, int byteCount) { return default(string); }
+        public virtual string GetString(byte[] bytes) { return default(string); }
+        public virtual string GetString(byte[] bytes, int index, int count) { return default(string); }
+        [System.Security.SecurityCriticalAttribute]
+        public static void RegisterProvider(System.Text.EncodingProvider provider) { }
+    }
+    public abstract partial class EncodingProvider
+    {
+        public EncodingProvider() { }
+        public abstract System.Text.Encoding GetEncoding(int codepage);
+        public virtual System.Text.Encoding GetEncoding(int codepage, System.Text.EncoderFallback encoderFallback, System.Text.DecoderFallback decoderFallback) { return default(System.Text.Encoding); }
+        public abstract System.Text.Encoding GetEncoding(string name);
+        public virtual System.Text.Encoding GetEncoding(string name, System.Text.EncoderFallback encoderFallback, System.Text.DecoderFallback decoderFallback) { return default(System.Text.Encoding); }
     }
 }
 namespace System.Threading

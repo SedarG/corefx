@@ -423,11 +423,20 @@
     <BaseLinePackage Include="runtime.native.System.Security.Cryptography">
       <Version>4.0.0</Version>
     </BaseLinePackage>
+    <BaseLinePackage Include="runtime.native.System.Security.Cryptography.Apple">
+      <Version>4.0.1</Version>
+    </BaseLinePackage>
     <BaseLinePackage Include="System.Private.DataContractSerialization">
       <Version>4.1.1</Version>
     </BaseLinePackage>
     <BaseLinePackage Include="System.Private.Uri">
       <Version>4.0.1</Version>
+    </BaseLinePackage>
+    <BaseLinePackage Include="System.Private.Xml">
+      <Version>4.0.0</Version>
+    </BaseLinePackage>
+    <BaseLinePackage Include="System.Private.Xml.Linq">
+      <Version>4.0.0</Version>
     </BaseLinePackage>
   </ItemGroup>
 </Project>
