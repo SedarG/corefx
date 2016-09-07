@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using Internal.Runtime.Augments;
+using Microsoft.Win32;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -72,25 +73,27 @@ namespace System
             {
                 return GetEnvironmentVariableCore(variable);
             }
-            else if (target == EnvironmentVariableTarget.Machine)
-            {
-                // TODO #8533: Uncomment/fix when registry APIs available
-                //using (RegistryKey environmentKey = Registry.LocalMachine.OpenSubKey(@"System\CurrentControlSet\Control\Session Manager\Environment", false))
-                //{
-                //    return environmentKey?.GetValue(variable) as string ?? null;
-                //}
-                return null;
-            }
             else
             {
-                Debug.Assert(target == EnvironmentVariableTarget.User);
+                RegistryKey baseKey;
+                string keyName;
 
-                // TODO #8533: Uncomment/fix when registry APIs available
-                //using (RegistryKey environmentKey = Registry.CurrentUser.OpenSubKey("Environment", false))
-                //{
-                //    return environmentKey?.GetValue(variable) as string ?? null;
-                //}
-                return null;
+                if (target == EnvironmentVariableTarget.Machine)
+                {
+                    baseKey = Registry.LocalMachine;
+                    keyName = @"System\CurrentControlSet\Control\Session Manager\Environment";
+                }
+                else
+                {
+                    Debug.Assert(target == EnvironmentVariableTarget.User);
+                    baseKey = Registry.CurrentUser;
+                    keyName = "Environment";
+                }
+
+                using (RegistryKey environmentKey = baseKey.OpenSubKey(keyName, writable: false))
+                {
+                    return environmentKey?.GetValue(variable) as string;
+                }
             }
         }
 
@@ -145,43 +148,36 @@ namespace System
             {
                 return GetEnvironmentVariablesCore();
             }
-
-            var results = new LowLevelDictionary<string, string>();
-            if (target == EnvironmentVariableTarget.Machine)
-            {
-                // TODO #8533: Uncomment/fix when registry APIs available
-                //using (RegistryKey environmentKey = Registry.LocalMachine.OpenSubKey(@"System\CurrentControlSet\Control\Session Manager\Environment", false))
-                //{
-                //    return GetRegistryKeyNameValuePairs(environmentKey);
-                //}
-            }
             else
             {
-                Debug.Assert(target == EnvironmentVariableTarget.User);
-                // TODO #8533: Uncomment/fix when registry APIs available
-                //using (RegistryKey environmentKey = Registry.CurrentUser.OpenSubKey("Environment", false))
-                //{
-                //    return GetRegistryKeyNameValuePairs(environmentKey);
-                //}
-            }
-            return results;
-        }
+                RegistryKey baseKey;
+                string keyName;
+                if (target == EnvironmentVariableTarget.Machine)
+                {
+                    baseKey = Registry.LocalMachine;
+                    keyName = @"System\CurrentControlSet\Control\Session Manager\Environment";
+                }
+                else
+                {
+                    Debug.Assert(target == EnvironmentVariableTarget.User);
+                    baseKey = Registry.CurrentUser;
+                    keyName = @"Environment";
+                }
 
-        // TODO #8533: Uncomment/fix when registry APIs available
-        //private static IDictionary GetRegistryKeyNameValuePairs(RegistryKey registryKey)
-        //{
-        //    Hashtable table = new Hashtable(20);
-        //    if (registryKey != null)
-        //    {
-        //        string[] names = registryKey.GetValueNames();
-        //        foreach (string name in names)
-        //        {
-        //            string value = registryKey.GetValue(name, "").ToString();
-        //            table.Add(name, value);
-        //        }
-        //    }
-        //    return table;
-        //}
+                using (RegistryKey environmentKey = baseKey.OpenSubKey(keyName, writable: false))
+                {
+                    var table = new LowLevelDictionary<string, string>();
+                    if (environmentKey != null)
+                    {
+                        foreach (string name in environmentKey.GetValueNames())
+                        {
+                            table.Add(name, environmentKey.GetValue(name, "").ToString());
+                        }
+                    }
+                    return table;
+                }
+            }
+        }
 
         private unsafe static char[] GetEnvironmentCharArray()
         {
@@ -218,7 +214,7 @@ namespace System
                     return SystemDirectory;
                 default:
                     // TODO: SHGetFolderPath is not available in the approved API list
-                    throw new PlatformNotSupportedException();
+                    return string.Empty;
             }
         }
 
@@ -258,50 +254,58 @@ namespace System
                 Marshal.PtrToStringUni((IntPtr)version.szCSDVersion));
         });
 
-        private static unsafe int ProcessorCountCore
+        public static int ProcessorCount
         {
             get
             {
-                // Determine how much size we need for a call to GetLogicalProcessorInformationEx
-                uint len = 0;
-                if (!Interop.mincore.GetLogicalProcessorInformationEx(Interop.mincore.LOGICAL_PROCESSOR_RELATIONSHIP.RelationGroup, IntPtr.Zero, ref len) &&
-                    Marshal.GetLastWin32Error() == Interop.mincore.Errors.ERROR_INSUFFICIENT_BUFFER)
-                {
-                    // Allocate that much space
-                    Debug.Assert(len > 0);
-                    var buffer = new byte[len];
-                    fixed (byte* bufferPtr = buffer)
-                    {
-                        // Call GetLogicalProcessorInformationEx with the allocated buffer
-                        if (Interop.mincore.GetLogicalProcessorInformationEx(Interop.mincore.LOGICAL_PROCESSOR_RELATIONSHIP.RelationGroup, (IntPtr)bufferPtr, ref len))
-                        {
-                            // Walk each SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX in the buffer, where the Size of each dictates how
-                            // much space it's consuming.  For each group relation, count the number of active processors in each of its group infos.
-                            int processorCount = 0;
-                            byte* ptr = bufferPtr, endPtr = bufferPtr + len;
-                            while (ptr < endPtr)
-                            {
-                                var current = (Interop.mincore.SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX*)ptr;
-                                if (current->Relationship == Interop.mincore.LOGICAL_PROCESSOR_RELATIONSHIP.RelationGroup)
-                                {
-                                    Interop.mincore.PROCESSOR_GROUP_INFO* groupInfo = &current->Group.GroupInfo;
-                                    int groupCount = current->Group.ActiveGroupCount;
-                                    for (int i = 0; i < groupCount; i++)
-                                    {
-                                        processorCount += (groupInfo + i)->ActiveProcessorCount;
-                                    }
-                                }
-                                ptr += current->Size;
-                            }
-                            return processorCount;
-                        }
-                    }
-                }
-
-                // GetLogicalProcessorInformationEx didn't work for some reason.  Fall back to using GetSystemInfo.
-                return ProcessorCountFromSystemInfo;
+                // First try GetLogicalProcessorInformationEx, caching the result as desktop/coreclr does.
+                // If that fails for some reason, fall back to a non-cached result from GetSystemInfo.
+                // (See SystemNative::GetProcessorCount in coreclr for a comparison.)
+                int pc = s_processorCountFromGetLogicalProcessorInformationEx.Value;
+                return pc != 0 ? pc : ProcessorCountFromSystemInfo;
             }
         }
+
+        private static readonly unsafe Lazy<int> s_processorCountFromGetLogicalProcessorInformationEx = new Lazy<int>(() =>
+        {
+            // Determine how much size we need for a call to GetLogicalProcessorInformationEx
+            uint len = 0;
+            if (!Interop.mincore.GetLogicalProcessorInformationEx(Interop.mincore.LOGICAL_PROCESSOR_RELATIONSHIP.RelationGroup, IntPtr.Zero, ref len) &&
+                Marshal.GetLastWin32Error() == Interop.mincore.Errors.ERROR_INSUFFICIENT_BUFFER)
+            {
+                // Allocate that much space
+                Debug.Assert(len > 0);
+                var buffer = new byte[len];
+                fixed (byte* bufferPtr = buffer)
+                {
+                    // Call GetLogicalProcessorInformationEx with the allocated buffer
+                    if (Interop.mincore.GetLogicalProcessorInformationEx(Interop.mincore.LOGICAL_PROCESSOR_RELATIONSHIP.RelationGroup, (IntPtr)bufferPtr, ref len))
+                    {
+                        // Walk each SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX in the buffer, where the Size of each dictates how
+                        // much space it's consuming.  For each group relation, count the number of active processors in each of its group infos.
+                        int processorCount = 0;
+                        byte* ptr = bufferPtr, endPtr = bufferPtr + len;
+                        while (ptr < endPtr)
+                        {
+                            var current = (Interop.mincore.SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX*)ptr;
+                            if (current->Relationship == Interop.mincore.LOGICAL_PROCESSOR_RELATIONSHIP.RelationGroup)
+                            {
+                                Interop.mincore.PROCESSOR_GROUP_INFO* groupInfo = &current->Group.GroupInfo;
+                                int groupCount = current->Group.ActiveGroupCount;
+                                for (int i = 0; i < groupCount; i++)
+                                {
+                                    processorCount += (groupInfo + i)->ActiveProcessorCount;
+                                }
+                            }
+                            ptr += current->Size;
+                        }
+                        return processorCount;
+                    }
+                }
+            }
+
+            return 0;
+        });
 
         private static void SetEnvironmentVariableCore(string variable, string value)
         {
@@ -326,38 +330,45 @@ namespace System
             {
                 SetEnvironmentVariableCore(variable, value);
             }
-            else if (target == EnvironmentVariableTarget.Machine)
-            {
-                // TODO #8533: Uncomment/fix when registry APIs available
-                //using (RegistryKey environmentKey = Registry.LocalMachine.OpenSubKey(@"System\CurrentControlSet\Control\Session Manager\Environment", true))
-                //{
-                //    if (environmentKey != null)
-                //    {
-                //        if (value == null) environmentKey.DeleteValue(variable, false);
-                //        else environmentKey.SetValue(variable, value);
-                //    }
-                //}
-            }
             else
             {
-                Debug.Assert(target == EnvironmentVariableTarget.User);
+                RegistryKey baseKey;
+                string keyName;
 
-                // User-wide environment variables stored in the registry are limited to 255 chars for the environment variable name.
-                const int MaxUserEnvVariableLength = 255;
-                if (variable.Length >= MaxUserEnvVariableLength)
+                if (target == EnvironmentVariableTarget.Machine)
                 {
-                    throw new ArgumentException(SR.Argument_LongEnvVarValue, nameof(variable));
+                    baseKey = Registry.LocalMachine;
+                    keyName = @"System\CurrentControlSet\Control\Session Manager\Environment";
+                }
+                else
+                {
+                    Debug.Assert(target == EnvironmentVariableTarget.User);
+
+                    // User-wide environment variables stored in the registry are limited to 255 chars for the environment variable name.
+                    const int MaxUserEnvVariableLength = 255;
+                    if (variable.Length >= MaxUserEnvVariableLength)
+                    {
+                        throw new ArgumentException(SR.Argument_LongEnvVarValue, nameof(variable));
+                    }
+
+                    baseKey = Registry.CurrentUser;
+                    keyName = "Environment";
                 }
 
-                // TODO #8533: Uncomment/fix when registry APIs available
-                //using (RegistryKey environmentKey = Registry.CurrentUser.OpenSubKey("Environment", true))
-                //{
-                //    if (environmentKey != null)
-                //    {
-                //        if (value == null) environmentKey.DeleteValue(variable, false);
-                //        else environmentKey.SetValue(variable, value);
-                //    }
-                //}
+                using (RegistryKey environmentKey = baseKey.OpenSubKey(keyName, writable: true))
+                {
+                    if (environmentKey != null)
+                    {
+                        if (value == null)
+                        {
+                            environmentKey.DeleteValue(variable, throwOnMissingValue: false);
+                        }
+                        else
+                        {
+                            environmentKey.SetValue(variable, value);
+                        }
+                    }
+                }
             }
 
             //// Desktop sends a WM_SETTINGCHANGE message to all windows.  Not available on all platforms.

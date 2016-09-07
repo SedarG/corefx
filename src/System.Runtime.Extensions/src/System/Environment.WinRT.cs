@@ -26,7 +26,7 @@ namespace System
 
         private static string GetFolderPathCore(SpecialFolder folder, SpecialFolderOption option)
         {
-            throw new PlatformNotSupportedException();
+            return string.Empty;
         }
 
         private static bool Is64BitOperatingSystemWhen32BitProcess => false;
@@ -40,7 +40,7 @@ namespace System
             return new OperatingSystem(PlatformID.Win32NT, new Version(0, 0));
         });
 
-        private static int ProcessorCountCore => ProcessorCountFromSystemInfo;
+        public static int ProcessorCount => ProcessorCountFromSystemInfo;
 
         private static void SetEnvironmentVariableCore(string variable, string value)
         {
